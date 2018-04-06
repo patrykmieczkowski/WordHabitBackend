@@ -1,0 +1,68 @@
+FROM ubuntu:16.04
+
+# Port exposition
+EXPOSE 8000
+
+# Default workdir
+WORKDIR /root
+
+# Required packages
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install -y curl git
+
+# Node.js
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
+RUN apt-get install -y nodejs build-essential g++ gyp
+RUN echo "export NODE_ENV=production" >> /root/.bashrc
+RUN npm install -g pm2
+
+# nginx
+RUN apt-get install -y nginx
+RUN echo 'server {\n\
+  listen      8000 default_server;\n\
+  server_name _;\n\
+\n\
+  root /root/WordHabitBackend/;\n\
+\n\
+  location /media/ {\n\
+    autoindex off;\n\
+  }\n\
+\n\
+  location / {\n\
+    proxy_pass http://127.0.0.1:8001;\n\
+    proxy_set_header Host $host;\n\
+    proxy_set_header X-Forwarded-For $remote_addr;\n\
+  }\n\
+}\n' \
+> /etc/nginx/conf.d/WordHabitBackend.conf
+RUN sed -i \
+  -e 's/include \/etc\/nginx\/sites-enabled\/\*/# include \/etc\/nginx\/sites-enabled\/\*/g' \
+  /etc/nginx/nginx.conf
+RUN service nginx restart
+
+# init.sh script
+RUN echo '#!/bin/bash\n\
+\n\
+pm2-docker start /root/WordHabitBackend/src/app.js\n' \
+> /root/init.sh
+RUN chmod +x /root/init.sh
+
+# Project
+RUN git clone https://github.com/patrykmieczkowski/WordHabitBackend.git /root/WordHabitBackend
+RUN npm install --prefix /root/WordHabitBackend
+
+# Configuration
+RUN sed \
+  -e 's/\("port":\)\{1\}\(.*\)/\1 8001,/g' \
+  -e 's/\("host":\)\{1\}\(.*\)/\1 "127\.0\.0\.1",/g' \
+  -e 's/\("user":\)\{1\}\(.*\)/\1 "word_habit_user",/g' \
+  -e 's/\("password":\)\{1\}\(.*\)/\1 "word_habit_user"/g' \
+  -e 's/\("mediaDir":\)\{1\}\(.*\)/\1 "\.\/media",/g' \
+  -e 's/\("url":\)\{1\}\(.*\)/\1 "http:\/\/127\.0\.0\.1:8000",/g' \
+  -e 's/\("media":\)\{1\}\(.*\)/\1 "media"/g' \
+  /root/WordHabitBackend/config.json.sample > /root/WordHabitBackend/config.json
+COPY serviceAccountKey.json /root/WordHabitBackend/serviceAccountKey.json
+
+# On startup
+CMD ["/root/init.sh"]

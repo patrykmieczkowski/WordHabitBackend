@@ -1,0 +1,81 @@
+<html>
+
+  <head>
+    <title>WordHabit Administration Panel - Word</title>
+  </head>
+
+  <body>
+    <form action="/panel/word" method="post" enctype="multipart/form-data">
+
+      <label>
+        Environment:
+        <select name="environment">
+          <option value="QA">QA</option>
+          <option value="PROD" selected>PROD</option>
+        </select>
+      </label>
+      <br />
+
+      <label>
+        Primary language:
+        <select name="primaryLang">
+          <option value="PL">Polski</option>
+          <option value="EN" selected>English</option>
+        </select>
+      </label>
+      <br />
+      <label>
+        Primary language word:
+        <input type="text" name="primaryLangWord" />
+      </label>
+      <br />
+      <label>
+        Primary language description:
+        <textarea name="primaryLangDescription"></textarea>
+      </label>
+      <br />
+      <br />
+
+      <label>
+        Secondary language:
+        <select name="secondaryLang">
+          <option value="PL" selected>Polski</option>
+          <option value="EN">English</option>
+        </select>
+      </label>
+      <br />
+      <label>
+        Secondary language word:
+        <input type="text" name="secondaryLangWord" />
+      </label>
+      <br />
+      <label>
+        Secondary language description:
+        <textarea name="secondaryLangDescription"></textarea>
+      </label>
+      <br />
+      <br />
+
+      <label>
+        Image:
+        <input type="file" name="image" />
+      </label>
+      <br />
+      <br />
+
+      <label>
+        Execution date:
+        <input type="date" name="executeAtDate" />
+      </label>
+      <label>
+        Execution time:
+        <input type="time" name="executeAtTime" />
+      </label>
+      <br />
+      <br />
+
+      <input type="submit" value="Add">
+
+    </form>
+  </body>
+</html>

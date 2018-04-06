@@ -1,0 +1,15 @@
+{
+  "port": 8001,
+  "database": {
+    "cassandra": {
+      "host": "127.0.0.1",
+      "user": "word_habit_user",
+      "password": "word_habit_user"
+    }
+  },
+  "mediaDir": "./media",
+  "cdn": {
+    "url": "http://127.0.0.1:8000",
+    "media": "media"
+  }
+}

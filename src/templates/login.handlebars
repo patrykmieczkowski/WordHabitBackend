@@ -1,0 +1,29 @@
+<html>
+
+  <head>
+    <title>WordHabit Administration Panel - Login</title>
+  </head>
+
+  <body>
+    <form action="/panel/login" method="post" enctype="application/x-www-form-urlencoded">
+
+      <label>Username: <input type="text" name="username" /></label>
+      <br />
+      <br />
+
+      <label>Password: <input type="password" name="password" /></label>
+      <br />
+      <br />
+
+      <input type="submit" value="Login">
+
+      {{#if error}}
+        <br />
+        <br />
+        <strong style="color: #ff0000">{{{error}}}</strong>
+      {{/if}}
+
+    </form>
+  </body>
+
+</html>
