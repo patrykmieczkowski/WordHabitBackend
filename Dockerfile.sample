@@ -1,7 +1,7 @@
 FROM ubuntu:16.04
 
 # Port exposition
-EXPOSE 8000
+EXPOSE 80
 
 # Default workdir
 WORKDIR /root
@@ -14,25 +14,22 @@ RUN apt-get install -y curl git
 # Node.js
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN apt-get install -y nodejs build-essential g++ gyp
-RUN echo "export NODE_ENV=production" >> /root/.bashrc
 RUN npm install -g pm2
 
 # nginx
 RUN apt-get install -y nginx
 RUN echo 'server {\n\
-  listen      8000 default_server;\n\
+  listen      80 default_server;\n\
   server_name _;\n\
 \n\
-  root /root/WordHabitBackend/;\n\
+  root /www/data/WordHabitBackend/;\n\
 \n\
   location /media/ {\n\
     autoindex off;\n\
   }\n\
 \n\
   location / {\n\
-    proxy_pass http://127.0.0.1:8001;\n\
-    proxy_set_header Host $host;\n\
-    proxy_set_header X-Forwarded-For $remote_addr;\n\
+    proxy_pass http://127.0.0.1:8000;\n\
   }\n\
 }\n' \
 > /etc/nginx/conf.d/WordHabitBackend.conf
@@ -41,28 +38,50 @@ RUN sed -i \
   /etc/nginx/nginx.conf
 RUN service nginx restart
 
-# init.sh script
-RUN echo '#!/bin/bash\n\
-\n\
-pm2-docker start /root/WordHabitBackend/src/app.js\n' \
-> /root/init.sh
-RUN chmod +x /root/init.sh
-
 # Project
 RUN git clone https://github.com/patrykmieczkowski/WordHabitBackend.git /root/WordHabitBackend
-RUN npm install --prefix /root/WordHabitBackend
+RUN rm -rf /root/WordHabitBackend/media
+RUN mkdir -p /www/data/WordHabitBackend
+RUN chmod -R 0755 /www
 
 # Configuration
 RUN sed \
-  -e 's/\("port":\)\{1\}\(.*\)/\1 8001,/g' \
+  -e 's/\("port":\)\{1\}\(.*\)/\1 8000,/g' \
   -e 's/\("host":\)\{1\}\(.*\)/\1 "127\.0\.0\.1",/g' \
   -e 's/\("user":\)\{1\}\(.*\)/\1 "word_habit_user",/g' \
   -e 's/\("password":\)\{1\}\(.*\)/\1 "word_habit_user"/g' \
-  -e 's/\("mediaDir":\)\{1\}\(.*\)/\1 "\.\/media",/g' \
+  -e 's/\("mediaDir":\)\{1\}\(.*\)/\1 "..\/..\/www\/data\/WordHabitBackend\/media",/g' \
   -e 's/\("url":\)\{1\}\(.*\)/\1 "http:\/\/127\.0\.0\.1:8000",/g' \
   -e 's/\("media":\)\{1\}\(.*\)/\1 "media"/g' \
   /root/WordHabitBackend/config.json.sample > /root/WordHabitBackend/config.json
 COPY serviceAccountKey.json /root/WordHabitBackend/serviceAccountKey.json
+
+# init.sh script
+RUN echo '#!/bin/bash\n\
+\n\
+git -C /root/WordHabitBackend pull\n\
+npm install --prefix /root/WordHabitBackend\n\
+service nginx restart\n\
+pm2-docker start /root/process.json\n' \
+> /root/init.sh
+RUN chmod +x /root/init.sh
+
+# PM2 process file
+RUN echo '{\n\
+  "apps": [{\n\
+    "name": "wordhabitbackend",\n\
+    "script": "/root/WordHabitBackend/src/app.js",\n\
+    "watch": true,\n\
+    "log_file": "/tmp/WordHabitBackend.log",\n\
+    "out_file": "/dev/null",\n\
+    "error_file": "/dev/null",\n\
+    "log_date_format": "",\n\
+    "env": {\n\
+      "NODE_ENV": "production"\n\
+    }\n\
+  }]\n\
+}\n' \
+> /root/process.json
 
 # On startup
 CMD ["/root/init.sh"]

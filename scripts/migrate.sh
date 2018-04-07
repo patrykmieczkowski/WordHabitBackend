@@ -10,8 +10,7 @@ node -e "
   const PlainTextAuthProvider = cassandraDriver.auth.PlainTextAuthProvider;
   const client = new cassandraDriver.Client({
     contactPoints: [cassandraConfig.host],
-    authProvider: new PlainTextAuthProvider('cassandra', 'cassandra'),
-    keyspace: 'word_habit'
+    authProvider: new PlainTextAuthProvider('cassandra', 'cassandra')
   });
 
   const query = fs.readFileSync(\`$MIGRATION\`.trim(), 'utf-8');

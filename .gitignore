@@ -52,6 +52,9 @@ jspm_packages
 # Vagrant files
 .vagrant
 
+# npm artifacts
+package-lock.json
+
 # Production Dockerfile
 /Dockerfile
 
