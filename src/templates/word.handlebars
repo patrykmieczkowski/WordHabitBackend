@@ -1,81 +1,86 @@
 <html>
 
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>WordHabit Administration Panel - Word</title>
+    {{{_style}}}
   </head>
 
   <body>
-    <form action="/panel/word" method="post" enctype="multipart/form-data">
+    <div class="pure-g wh-pure-g-menu">
+      <div class="pure-u-1 wh-pure-u-container">
+        <div class="pure-menu pure-menu-horizontal">
+          <a class="pure-menu-heading pure-menu-link" href="/panel/dashboard">WordHabit</a>
+          <ul class="pure-menu-list">
+            <li class="pure-menu-item">
+              <a href="/panel/dashboard" class="pure-menu-link">Dashboard</a>
+            </li>
+            <li class="pure-menu-item pure-menu-selected">
+              <a href="/panel/word" class="pure-menu-link">New word</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
-      <label>
-        Environment:
-        <select name="environment">
-          <option value="QA">QA</option>
-          <option value="PROD" selected>PROD</option>
-        </select>
-      </label>
-      <br />
+    <div class="pure-g">
+      <div class="pure-u-1 wh-pure-u-container wh-pure-u-content">
+        <form
+          class="pure-form pure-form-stacked"
+          action="/panel/word"
+          method="post"
+          enctype="multipart/form-data">
 
-      <label>
-        Primary language:
-        <select name="primaryLang">
-          <option value="PL">Polski</option>
-          <option value="EN" selected>English</option>
-        </select>
-      </label>
-      <br />
-      <label>
-        Primary language word:
-        <input type="text" name="primaryLangWord" />
-      </label>
-      <br />
-      <label>
-        Primary language description:
-        <textarea name="primaryLangDescription"></textarea>
-      </label>
-      <br />
-      <br />
+          <fieldset>
+            <legend>New word</legend>
 
-      <label>
-        Secondary language:
-        <select name="secondaryLang">
-          <option value="PL" selected>Polski</option>
-          <option value="EN">English</option>
-        </select>
-      </label>
-      <br />
-      <label>
-        Secondary language word:
-        <input type="text" name="secondaryLangWord" />
-      </label>
-      <br />
-      <label>
-        Secondary language description:
-        <textarea name="secondaryLangDescription"></textarea>
-      </label>
-      <br />
-      <br />
+            <label for="environment">Environment:</label>
+            <select id="environment" name="environment">
+              <option value="QA">QA</option>
+              <option value="PROD" selected>PROD</option>
+            </select>
 
-      <label>
-        Image:
-        <input type="file" name="image" />
-      </label>
-      <br />
-      <br />
+            <label for="primaryLang">Primary language:</label>
+            <select id="primaryLang" name="primaryLang">
+              <option value="PL">Polski</option>
+              <option value="EN" selected>English</option>
+            </select>
 
-      <label>
-        Execution date:
-        <input type="date" name="executeAtDate" />
-      </label>
-      <label>
-        Execution time:
-        <input type="time" name="executeAtTime" />
-      </label>
-      <br />
-      <br />
+            <label for="primaryLangWord">Primary language word:</label>
+            <input id="primaryLangWord" type="text" name="primaryLangWord" />
 
-      <input type="submit" value="Add">
+            <label for="primaryLangDescription">Primary language description:</label>
+            <textarea id="primaryLangDescription" name="primaryLangDescription"></textarea>
 
-    </form>
+            <label for="secondaryLang">Secondary language:</label>
+            <select id="secondaryLang" name="secondaryLang">
+              <option value="PL" selected>Polski</option>
+              <option value="EN">English</option>
+            </select>
+
+            <label for="secondaryLangWord">Secondary language word:</label>
+            <input id="secondaryLangWord" type="text" name="secondaryLangWord" />
+
+            <label for="secondaryLangDescription">Secondary language description:</label>
+            <textarea id="secondaryLangDescription" name="secondaryLangDescription"></textarea>
+
+            <label for="image">Image:</label>
+            <input id="image" type="file" name="image" />
+
+            <label for="executeAtDate">Execution date:</label>
+            <input id="executeAtDate" type="date" name="executeAtDate" />
+
+            <label for="executeAtTime">Execution time:</label>
+            <input id="executeAtTime" type="time" name="executeAtTime" />
+
+            <input class="pure-button pure-button-primary" type="submit" value="Add" />
+          </fieldset>
+
+        </form>
+      </div>
+    </div>
+
+    {{{_script}}}
   </body>
+
 </html>

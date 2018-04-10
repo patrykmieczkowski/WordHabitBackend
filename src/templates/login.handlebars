@@ -1,29 +1,48 @@
 <html>
 
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>WordHabit Administration Panel - Login</title>
+    {{{_style}}}
   </head>
 
   <body>
-    <form action="/panel/login" method="post" enctype="application/x-www-form-urlencoded">
+    <div class="pure-g wh-pure-g-menu">
+      <div class="pure-u-1 wh-pure-u-container">
+        <div class="pure-menu pure-menu-horizontal">
+          <a class="pure-menu-heading pure-menu-link" href="/panel/login">WordHabit</a>
+        </div>
+      </div>
+    </div>
 
-      <label>Username: <input type="text" name="username" /></label>
-      <br />
-      <br />
+    <div class="pure-g">
+      <div class="pure-u-1 wh-pure-u-container wh-pure-u-content">
+        <form
+          class="pure-form pure-form-stacked"
+          action="/panel/login"
+          method="post"
+          enctype="application/x-www-form-urlencoded">
 
-      <label>Password: <input type="password" name="password" /></label>
-      <br />
-      <br />
+          <fieldset>
+            <legend>Login</legend>
 
-      <input type="submit" value="Login">
+            <label for="username">Username: </label>
+            <input id="username" type="text" name="username" />
 
-      {{#if error}}
-        <br />
-        <br />
-        <strong style="color: #ff0000">{{{error}}}</strong>
-      {{/if}}
+            <label for="password">Password: </label>
+            <input id="password" type="password" name="password" />
 
-    </form>
+            <input class="pure-button pure-button-primary" type="submit" value="Login" />
+
+            {{#if error}}
+              <strong class="pure-form-message wh-pure-alert">{{{error}}}</strong>
+            {{/if}}
+          </fieldset>
+        </form>
+      </div>
+    </div>
+
+    {{{_script}}}
   </body>
 
 </html>

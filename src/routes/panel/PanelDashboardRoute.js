@@ -16,6 +16,7 @@ class PanelDashboardRoute extends Route {
         return WordModel.selectAll();
       })
       .then(words => {
+        (words || []).sort((a, b) => a.getExecuteAt() > b.getExecuteAt() ? -1 : 1);
         words = (words || []).map(word => word.serialize());
         return this.render(Template.Name.DASHBOARD, {words: words});
       })

@@ -1,36 +1,54 @@
 <html>
 
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>WordHabit Administration Panel - Dashboard</title>
+    {{{_style}}}
   </head>
 
   <body>
+    <div class="pure-g wh-pure-g-menu">
+      <div class="pure-u-1 wh-pure-u-container">
+        <div class="pure-menu pure-menu-horizontal">
+          <a class="pure-menu-heading pure-menu-link" href="/panel/dashboard">WordHabit</a>
+          <ul class="pure-menu-list">
+            <li class="pure-menu-item pure-menu-selected">
+              <a href="/panel/dashboard" class="pure-menu-link">Dashboard</a>
+            </li>
+            <li class="pure-menu-item">
+              <a href="/panel/word" class="pure-menu-link">New word</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
-    <a href="/panel/word">Add new word</a>
-
-    <h1>Word list</h1>
-    <table border="1">
-      <thead>
-        <tr>
-          <th>Primary language word</th>
-          <th>Secondary language word</th>
-          <th>Environment</th>
-          <th>Execute at</th>
-          <th>Executed</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each words}}
+    <div class="pure-g">
+      <div class="pure-u-1 wh-pure-u-container wh-pure-u-content">
+        <table class="pure-table pure-table-bordered wh-pure-table">
+          <thead>
           <tr>
-            <td>{{primaryLangWord}}</td>
-            <td>{{secondaryLangWord}}</td>
-            <td>{{environment}}</td>
-            <td>{{executeAt}}</td>
-            <td>{{executed}}</td>
+            <th>Lang</th>
+            <th>Word</th>
+            <th>Env</th>
+            <th>Date</th>
           </tr>
-        {{/each}}
-      </tbody>
-    </table>
+          </thead>
+          <tbody>
+          {{#each words}}
+            <tr class="{{ternary executed 'wh-pure-table-success' 'wh-pure-table-failure'}}">
+              <td>{{primaryLang}}<br />{{secondaryLang}}</td>
+              <td>{{primaryLangWord}}<br />{{secondaryLangWord}}</td>
+              <td>{{environment}}</td>
+              <td>{{executeAt}}</td>
+            </tr>
+          {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
 
+    {{{_script}}}
   </body>
+
 </html>
