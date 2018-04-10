@@ -53,7 +53,9 @@ class PanelWordRoute extends Route {
           ? fields.imageUrl.trim()
           : path.basename(files.imageFile.path));
         word.setExecuted(false);
-        word.setExecuteAt(moment(`${fields.executeAtDate} ${fields.executeAtTime}`).toDate());
+        word.setExecuteAt(moment(`${fields.executeAtDate} ${fields.executeAtTime}`)
+          .add(fields.timezoneOffset, 'minutes')
+          .toDate());
         return word.insert();
       })
       .then(() => {

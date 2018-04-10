@@ -1,9 +1,31 @@
 <script type="text/javascript">
   (function () {
 
+    // dashboard # executeAt timestamps handler
+    let wordList = document.getElementById('wordList');
+    if (wordList) {
+      const allCells = wordList.getElementsByTagName('td');
+      Array.prototype.slice.call(allCells)
+        .filter((elem, idx) => idx % 4 === 3)
+        .forEach(elem => {
+          const date = new Date(parseInt(elem.innerHTML));
+          elem.innerHTML =
+            `${getDayOfTheWeek(date.getDay())} ${getMonth(date.getMonth())} ` +
+            `${padZeros(date.getDate(), 2)} ${padZeros(date.getFullYear(), 4)} ` +
+            `${padZeros(date.getHours(), 2)}:${padZeros(date.getMinutes(), 2)}:${padZeros(date.getSeconds(), 2)}`;
+        });
+    }
+
+    // word # timezoneOffset population
+    let timezoneOffset = document.getElementsByName('timezoneOffset');
+    if (timezoneOffset.length) {
+      timezoneOffset = timezoneOffset[0];
+      timezoneOffset.value = (new Date()).getTimezoneOffset();
+    }
+
     // word # imageOption radios handler
     let imageOptions = document.getElementsByName('imageOption');
-    if (imageOptions) {
+    if (imageOptions.length) {
       imageOptions.forEach(imageOption => {
         imageOption.onclick = e => {
           const isOptionUrl = e.target.value === 'URL';
@@ -15,6 +37,41 @@
           imageFile.value = '';
         };
       });
+    }
+
+    // helpers
+    function padZeros(n, len) {
+      n = n.toString();
+      return n.length >= len ? n : new Array(len - n.length + 1).join('0') + n;
+    }
+
+    function getDayOfTheWeek(dayNumber) {
+      return [
+        'Mon',
+        'Tue',
+        'Wed',
+        'Thu',
+        'Fri',
+        'Sat',
+        'Sun'
+      ][dayNumber];
+    }
+
+    function getMonth(monthNumber) {
+      return [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec'
+      ][monthNumber];
     }
 
   })();

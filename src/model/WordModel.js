@@ -50,6 +50,12 @@ class WordModel extends Model {
       .then(result => this.parseResult(result));
   }
 
+  serialize() {
+    let serializedObj = Model.prototype.serialize.call(this);
+    serializedObj.executeAt = serializedObj.executeAt && serializedObj.executeAt.getTime();
+    return serializedObj;
+  }
+
   insert() {
     const query =
       'INSERT INTO word (' +
