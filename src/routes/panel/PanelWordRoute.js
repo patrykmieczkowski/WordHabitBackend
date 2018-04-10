@@ -49,7 +49,9 @@ class PanelWordRoute extends Route {
         word.setPrimaryLangDescription(fields.primaryLangDescription);
         word.setSecondaryLangWord(fields.secondaryLangWord);
         word.setSecondaryLangDescription(fields.secondaryLangDescription);
-        word.setImageUrl(path.basename(files.image.path));
+        word.setImageUrl(fields.imageOption === 'URL'
+          ? fields.imageUrl.trim()
+          : path.basename(files.imageFile.path));
         word.setExecuted(false);
         word.setExecuteAt(moment(`${fields.executeAtDate} ${fields.executeAtTime}`).toDate());
         return word.insert();

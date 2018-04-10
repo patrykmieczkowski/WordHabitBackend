@@ -1,2 +1,21 @@
 <script type="text/javascript">
+  (function () {
+
+    // word # imageOption radios handler
+    let imageOptions = document.getElementsByName('imageOption');
+    if (imageOptions) {
+      imageOptions.forEach(imageOption => {
+        imageOption.onclick = e => {
+          const isOptionUrl = e.target.value === 'URL';
+          const imageUrl = document.getElementById('imageUrl');
+          const imageFile = document.getElementById('imageFile');
+          imageUrl.disabled = !isOptionUrl;
+          imageFile.disabled = isOptionUrl;
+          imageUrl.value = '';
+          imageFile.value = '';
+        };
+      });
+    }
+
+  })();
 </script>

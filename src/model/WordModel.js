@@ -123,7 +123,11 @@ class WordModel extends Model {
     if (!imageUrl)
       return null;
 
-    return `${AppContext.instance().getAddress().getMediaUrl()}/${imageUrl}`;
+    else if (/^https?:\/\//.test(imageUrl))
+      return imageUrl;
+
+    else
+      return `${AppContext.instance().getAddress().getMediaUrl()}/${imageUrl}`;
   }
 }
 

@@ -40,6 +40,8 @@
               <option value="PROD" selected>PROD</option>
             </select>
 
+            <br />
+
             <label for="primaryLang">Primary language:</label>
             <select id="primaryLang" name="primaryLang">
               <option value="PL">Polski</option>
@@ -51,6 +53,8 @@
 
             <label for="primaryLangDescription">Primary language description:</label>
             <textarea id="primaryLangDescription" name="primaryLangDescription"></textarea>
+
+            <br />
 
             <label for="secondaryLang">Secondary language:</label>
             <select id="secondaryLang" name="secondaryLang">
@@ -64,14 +68,32 @@
             <label for="secondaryLangDescription">Secondary language description:</label>
             <textarea id="secondaryLangDescription" name="secondaryLangDescription"></textarea>
 
-            <label for="image">Image:</label>
-            <input id="image" type="file" name="image" />
+            <br />
+            <br />
+
+            <label for="imageUrlRadio" class="pure-radio">
+              <input id="imageUrlRadio" type="radio" name="imageOption" value="URL" checked />
+              Image URL
+            </label>
+            <input id="imageUrl" type="url" name="imageUrl" />
+
+            <label for="imageFileRadio" class="pure-radio">
+              <input id="imageFileRadio" type="radio" name="imageOption" value="FILE">
+              Image file
+            </label>
+            <input id="imageFile" type="file" name="imageFile" disabled />
+
+            <br />
+            <br />
 
             <label for="executeAtDate">Execution date:</label>
             <input id="executeAtDate" type="date" name="executeAtDate" />
 
             <label for="executeAtTime">Execution time:</label>
             <input id="executeAtTime" type="time" name="executeAtTime" />
+
+            <br />
+            <br />
 
             <input class="pure-button pure-button-primary" type="submit" value="Add" />
           </fieldset>

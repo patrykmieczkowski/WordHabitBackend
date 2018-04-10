@@ -1,7 +1,7 @@
 {
   "name": "wordhabitbackend",
   "description": "",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js"
