@@ -98,6 +98,10 @@
             <br />
 
             <input class="pure-button pure-button-primary" type="submit" value="Add" />
+
+            {{#if error}}
+              <strong class="pure-form-message wh-pure-alert">{{{error}}}</strong>
+            {{/if}}
           </fieldset>
 
         </form>

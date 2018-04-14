@@ -19,6 +19,14 @@ class AppContext extends Singleton {
     return this._logger;
   }
 
+  setValidator(validator) {
+    this._validator = validator;
+  }
+
+  getValidator() {
+    return this._validator;
+  }
+
   setCassandra(cassandra) {
     this._cassandra = cassandra;
   }
