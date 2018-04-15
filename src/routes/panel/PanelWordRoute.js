@@ -12,19 +12,19 @@ const WordModel = require('../../model/WordModel');
 class PanelWordRoute extends Route {
 
   GET(req, res, next) {
-    this.authenticate()
+    this.authenticate(req, res, next)
       .then(isUserAuthenticated => {
         if (!isUserAuthenticated)
           throw new Error('NOT_AUTHENTICATED');
       })
       .then(() => {
-        this.render(Template.Name.WORD, {});
+        this.render(req, res, next, Template.Name.WORD, {});
       })
       .catch(err => {
         const message = err && (err.message || err);
         AppContext.instance().getLogger().error(
           `\`PanelWordRoute\` failure: "${message}"`);
-        this.redirect('/panel/login', {error: message});
+        this.goTo(req, res, next, '/panel/login', {error: message});
       });
   }
 
@@ -39,7 +39,7 @@ class PanelWordRoute extends Route {
     if (fields.timezoneOffset)
       fields.timezoneOffset = parseInt(fields.timezoneOffset);
 
-    this.authenticate()
+    this.authenticate(req, res, next)
       .then(isUserAuthenticated => {
         if (!isUserAuthenticated)
           throw new Error('NOT_AUTHENTICATED');
@@ -91,7 +91,7 @@ class PanelWordRoute extends Route {
         return word.insert();
       })
       .then(() => {
-        this.redirect('/panel/dashboard');
+        this.goTo(req, res, next, '/panel/dashboard');
       })
       .catch(err => {
         const message = err && err.message;
@@ -99,13 +99,13 @@ class PanelWordRoute extends Route {
           `\`PanelWordRoute\` failure: "${message}"`);
         switch (message) {
           case 'NOT_AUTHENTICATED':
-            this.redirect('/panel/login', {error: message});
+            this.goTo(req, res, next, '/panel/login', {error: message});
             break;
           case 'INVALID_FORM':
           default:
             if (files && files.imageFile && files.imageFile.path)
               fs.unlink(files.imageFile.path, Function.prototype);
-            this.render(Template.Name.WORD, {error: message});
+            this.render(req, res, next, Template.Name.WORD, {error: message});
             break;
         }
       });

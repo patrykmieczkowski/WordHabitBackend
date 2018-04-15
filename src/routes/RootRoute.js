@@ -4,7 +4,7 @@ const Route = require('./abstract/Route');
 class RootRoute extends Route {
 
   GET(req, res, next) {
-    this.redirect('/panel/login');
+    this.redirect(req, res, next, '/panel/login');
   }
 }
 

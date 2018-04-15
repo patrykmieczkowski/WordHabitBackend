@@ -1,3 +1,4 @@
+const querystring = require('querystring');
 const AppContext = require('../../utils/AppContext');
 const Router = require('../../utils/Router');
 const AdminSessionModel = require('../../model/AdminSessionModel');
@@ -5,9 +6,10 @@ const AdminSessionModel = require('../../model/AdminSessionModel');
 
 class Route {
 
-  static get STATUS() {
+  static get Status() {
     return {
       OK: 200,
+      MOVED_PERMANENTLY: 301,
       FOUND: 302,
       BAD_REQUEST: 400,
       UNAUTHORIZED: 401,
@@ -16,7 +18,7 @@ class Route {
     };
   }
 
-  static get TYPE() {
+  static get Type() {
     return {
       HTML: 'html',
       JSON: 'json'
@@ -28,10 +30,6 @@ class Route {
   }
 
   handle(req, res, next) {
-    this._req = req;
-    this._res = res;
-    this._next = next;
-
     switch (req.method) {
       case Router.Method.POST.toUpperCase():
         this.POST(req, res, next);
@@ -48,8 +46,8 @@ class Route {
     }
   }
 
-  authenticate() {
-    const SID = this._req.cookies.SID;
+  authenticate(req, res, next) {
+    const SID = req.cookies.SID;
 
     if (!SID)
       return Promise.resolve(false);
@@ -62,25 +60,28 @@ class Route {
       .then(adminSession => adminSession && adminSession.getId().toString() === adminSessionId);
   }
 
-  render(templateName, data) {
-    this._res.locals.status = Route.STATUS.OK;
-    this._res.locals.type = Route.TYPE.HTML;
-    this._res.locals.body = AppContext.instance().getTemplate().populate(templateName, data);
-    this._next();
+  render(req, res, next, templateName, data) {
+    res.locals.status = Route.Status.OK;
+    res.locals.type = Route.Type.HTML;
+    res.locals.body = AppContext.instance().getTemplate().populate(templateName, data);
+    next();
   }
 
-  redirect(path, params) {
-    let encodedParams;
+  goTo(req, res, next, path, params) {
+    const encodedParams = querystring.stringify(params);
+    const fullPath = `${path}${encodedParams ? `?${encodedParams}` : ''}`;
+    res.location(fullPath);
+    res.locals.status = Route.Status.FOUND;
+    res.locals.type = Route.Type.HTML;
+    res.locals.body = '';
+    next();
+  }
 
-    if (params)
-      encodedParams = Object.keys(params)
-        .map(paramKey => `${encodeURIComponent(paramKey)}=${encodeURIComponent(params[paramKey])}`)
-        .join('&');
-
-    path = `${path}${encodedParams ? `?${encodedParams}` : ''}`;
-
-    this._res.redirect(Route.STATUS.FOUND, path);
-    this._next();
+  redirect(req, res, next, path, params) {
+    const encodedParams = querystring.stringify(params);
+    const fullPath = `${path}${encodedParams ? `?${encodedParams}` : ''}`;
+    res.redirect(Route.Status.MOVED_PERMANENTLY, fullPath);
+    next();
   }
 
   POST(req, res, next) {

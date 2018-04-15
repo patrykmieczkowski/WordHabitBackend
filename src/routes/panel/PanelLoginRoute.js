@@ -15,7 +15,7 @@ class PanelLoginRoute extends Route {
     if (req.query.error)
       data.error = req.query.error;
 
-    this.render(Template.Name.LOGIN, data);
+    this.render(req, res, next, Template.Name.LOGIN, data);
   }
 
   POST(req, res, next) {
@@ -50,13 +50,13 @@ class PanelLoginRoute extends Route {
           expire: new Date(2147483647000).toUTCString(),
           httpOnly: true
         });
-        this.redirect('/panel/dashboard');
+        this.goTo(req, res, next, '/panel/dashboard');
       })
       .catch(err => {
         const message = err && err.message;
         AppContext.instance().getLogger().error(
           `\`PanelLoginRoute\` failure: "${message}"`);
-        this.render(Template.Name.LOGIN, {error: message});
+        this.render(req, res, next, Template.Name.LOGIN, {error: message});
       });
   }
 }
