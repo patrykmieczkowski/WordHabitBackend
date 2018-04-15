@@ -6,13 +6,38 @@
     if (wordList) {
       const allCells = wordList.getElementsByTagName('td');
       Array.prototype.slice.call(allCells)
-        .filter((elem, idx) => idx % 4 === 3)
+        .filter((elem, idx) => idx % 5 === 3)
         .forEach(elem => {
           const date = new Date(parseInt(elem.innerHTML));
           elem.innerHTML =
             `${getDayOfTheWeek(date.getDay())} ${getMonth(date.getMonth())} ` +
             `${padZeros(date.getDate(), 2)} ${padZeros(date.getFullYear(), 4)} ` +
             `${padZeros(date.getHours(), 2)}:${padZeros(date.getMinutes(), 2)}:${padZeros(date.getSeconds(), 2)}`;
+        });
+    }
+
+    // dashboard # delete word button handler
+    let deleteWordButtons = document.getElementsByClassName('deleteWordButton');
+    if (deleteWordButtons.length) {
+      Array.prototype.slice.call(deleteWordButtons)
+        .forEach(deleteWordButton => {
+          deleteWordButton.onclick = e => {
+            const words = e.target
+              .parentElement
+              .previousElementSibling
+              .previousElementSibling
+              .previousElementSibling
+              .innerHTML
+              .replace(/<br( ?\/)?>/, ' / ');
+
+            if (confirm(`Are you sure you want to remove the word ${words}?`)) {
+              const wordId = e.target.previousElementSibling.value;
+              const oReq = new XMLHttpRequest();
+              oReq.open('DELETE', `/panel/word/${wordId}`);
+              oReq.send();
+              oReq.addEventListener('loadend', () => location.reload());
+            }
+          };
         });
     }
 

@@ -12,7 +12,7 @@ class LogIncomingMiddleware extends Middleware {
     else if (req.is('multipart'))
       raw = res.locals.multipartForm || {};
     else if (req.is('urlencoded'))
-      raw = req.params || {};
+      raw = req.body || {};
     else
       raw = {};
 

@@ -84,6 +84,13 @@ class Route {
     next();
   }
 
+  ok(req, res, next, body = {}, type = Route.Type.JSON) {
+    res.locals.status = Route.Status.OK;
+    res.locals.type = type;
+    res.locals.body = body;
+    next();
+  }
+
   POST(req, res, next) {
   }
 

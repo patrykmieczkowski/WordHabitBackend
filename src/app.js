@@ -63,6 +63,7 @@ router.addEndpoint(Router.Method.POST, '/panel/login', panelLoginRoute, urlencod
 router.addEndpoint(Router.Method.GET, '/panel/dashboard', panelDashboardRoute, emptyMiddleware);
 router.addEndpoint(Router.Method.GET, '/panel/word', panelWordRoute, emptyMiddleware);
 router.addEndpoint(Router.Method.POST, '/panel/word', panelWordRoute, multipartMiddleware);
+router.addEndpoint(Router.Method.DELETE, '/panel/word/:id', panelWordRoute, emptyMiddleware);
 
 // setup server
 const server = new Server();

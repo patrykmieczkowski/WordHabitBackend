@@ -32,6 +32,7 @@
             <th>Word</th>
             <th>Env</th>
             <th>Date</th>
+            <th>Del</th>
           </tr>
           </thead>
           <tbody>
@@ -41,6 +42,10 @@
               <td>{{primaryLangWord}}<br />{{secondaryLangWord}}</td>
               <td>{{environment}}</td>
               <td>{{executeAt}}</td>
+              <td>
+                <input type="hidden" value="{{{id}}}" />
+                <button class="deleteWordButton pure-button wh-pure-button-small wh-pure-button-error" type="button">X</button>
+              </td>
             </tr>
           {{/each}}
           </tbody>

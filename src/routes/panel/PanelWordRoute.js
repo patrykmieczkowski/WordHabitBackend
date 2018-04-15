@@ -110,6 +110,26 @@ class PanelWordRoute extends Route {
         }
       });
   }
+
+  DELETE(req, res, next) {
+    this.authenticate(req, res, next)
+      .then(isUserAuthenticated => {
+        if (!isUserAuthenticated)
+          throw new Error('NOT_AUTHENTICATED');
+      })
+      .then(() => {
+        return WordModel.deleteOne(req.params.id);
+      })
+      .then(() => {
+        this.ok(req, res, next);
+      })
+      .catch(err => {
+        const message = err && (err.message || err);
+        AppContext.instance().getLogger().error(
+          `\`PanelWordRoute\` failure: "${message}"`);
+        this.goTo(req, res, next, '/panel/login', {error: message});
+      });
+  }
 }
 
 module.exports = PanelWordRoute;

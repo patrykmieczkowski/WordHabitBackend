@@ -50,6 +50,21 @@ class WordModel extends Model {
       .then(result => this.parseResult(result));
   }
 
+  static deleteOne(id) {
+    const query =
+      'UPDATE word' +
+      '  SET deleted = ?,' +
+      '      modified_at = toTimestamp(now())' +
+      '  WHERE id = ?;';
+
+    const args = [
+      true,
+      id.toString()
+    ];
+
+    return AppContext.instance().getCassandra().execute(query, args);
+  }
+
   serialize() {
     let serializedObj = Model.prototype.serialize.call(this);
     serializedObj.executeAt = serializedObj.executeAt && serializedObj.executeAt.getTime();
