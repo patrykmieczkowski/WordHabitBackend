@@ -1,0 +1,127 @@
+@import './_constant';
+@import './_util';
+
+
+.wh-form {
+
+  fieldset {
+    &:not(:first-child) {
+      margin-top: $SIZE_MARGIN_XL;
+    }
+
+    & > * {
+      display: block;
+    }
+
+    & > legend {
+      width: 100%;
+      border-bottom: 1px solid $COLOR_DIVIDER;
+      margin-bottom: $SIZE_MARGIN_M;
+      padding-bottom: $SIZE_PADDING_XS;
+    }
+
+    & > label {
+      width: 15em;
+      padding-bottom: $SIZE_PADDING_XS;
+    }
+
+    input[type='text'],
+    input[type='password'],
+    input[type='url'],
+    input[type='file'],
+    input[type='date'],
+    input[type='time'],
+    select,
+    textarea {
+      font: inherit;
+      height: 30px;
+      border: 1px solid $COLOR_GREEN_DARK;
+      margin-bottom: $SIZE_MARGIN_M;
+      padding: ((30px - $SIZE_FONT_M) / 2) $SIZE_PADDING_XS;
+      outline: none;
+      transition: box-shadow 250ms ease;
+
+      &:focus,
+      &:active {
+        box-shadow: 0 0 5px 0 $COLOR_GREEN;
+      }
+    }
+
+    input[type='text'],
+    input[type='password'],
+    input[type='url'] {
+      width: 15em;
+    }
+
+    input[type='file'] {
+      border: none;
+    }
+
+    select {
+      padding-top: (26px - $SIZE_FONT_M) / 2;
+      padding-bottom: (26px - $SIZE_FONT_M) / 2;
+    }
+
+    textarea {
+      min-width: 15em;
+      min-height: 4em;
+    }
+  }
+
+  input[type='submit'],
+  input[type='button'] {
+    margin-bottom: $SIZE_MARGIN_M;
+  }
+}
+
+.wh-button {
+  cursor: pointer;
+  font: inherit;
+  color: $COLOR_LIGHT;
+  height: 40px;
+  padding: $SIZE_PADDING_S $SIZE_PADDING_XL;
+  background-color: $COLOR_GREEN;
+  border: 1px solid $COLOR_GREEN_DARK;
+  outline: none;
+  user-select: none;
+  transition: background-color 250ms ease;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: on-hover($COLOR_GREEN);
+  }
+
+  &.wh-button-confirm {
+    background-color: $COLOR_BLUE;
+    border-color: $COLOR_BLUE_DARK;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: on-hover($COLOR_BLUE);
+    }
+  }
+
+  &.wh-button-error {
+    background-color: $COLOR_RED;
+    border-color: $COLOR_RED_DARK;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: on-hover($COLOR_RED);
+    }
+  }
+
+  &.wh-button-secondary {
+    background-color: $COLOR_GRAY;
+    border-color: $COLOR_GRAY_DARK;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: on-hover($COLOR_GRAY);
+    }
+  }
+}

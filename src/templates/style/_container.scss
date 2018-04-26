@@ -1,0 +1,23 @@
+@import './_constant';
+
+
+.wh-container {
+  width: 100%;
+  padding-right: $SIZE_PADDING_M;
+  padding-left: $SIZE_PADDING_M;
+  margin-right: auto;
+  margin-left: auto;
+  box-sizing: border-box;
+
+  @media (min-width: 768px) {
+    width: 750px;
+  }
+
+  @media (min-width: 992px) {
+    width: 970px;
+  }
+
+  @media (min-width: 1200px) {
+    width: 1170px;
+  }
+}

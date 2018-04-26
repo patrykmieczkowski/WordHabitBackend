@@ -1,32 +1,26 @@
 <html>
 
   <head>
+    <meta name="robots" content="noindex, nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>WordHabit Administration Panel - Dashboard</title>
-    {{{_style}}}
+    {{{devStyle}}}
   </head>
 
-  <body>
-    <div class="pure-g wh-pure-g-menu">
-      <div class="pure-u-1 wh-pure-u-container">
-        <div class="pure-menu pure-menu-horizontal">
-          <a class="pure-menu-heading pure-menu-link" href="/panel/dashboard">WordHabit</a>
-          <ul class="pure-menu-list">
-            <li class="pure-menu-item pure-menu-selected">
-              <a href="/panel/dashboard" class="pure-menu-link">Dashboard</a>
-            </li>
-            <li class="pure-menu-item">
-              <a href="/panel/word" class="pure-menu-link">New word</a>
-            </li>
-          </ul>
-        </div>
+  <body class="wh-dashboard-page">
+    <header class="wh-header">
+      <div class="wh-container">
+        <span class="wh-logo"></span>
+        <a class="wh-navlink active" href="/panel/dashboard">Dashboard</a>
+        <a class="wh-navlink" href="/panel/word">New word</a>
       </div>
-    </div>
+    </header>
 
-    <div class="pure-g">
-      <div class="pure-u-1 wh-pure-u-container wh-pure-u-content">
-        <table id="wordList" class="pure-table pure-table-bordered wh-pure-table">
-          <thead>
+    <div class="wh-content wh-container">
+      <strong class="wh-alert">{{{error}}}</strong>
+
+      <table id="wordList" class="wh-table">
+        <thead>
           <tr>
             <th>Lang</th>
             <th>Word</th>
@@ -34,26 +28,25 @@
             <th>Date</th>
             <th>Del</th>
           </tr>
-          </thead>
-          <tbody>
+        </thead>
+        <tbody>
           {{#each words}}
-            <tr class="{{ternary executed 'wh-pure-table-success' 'wh-pure-table-failure'}}">
-              <td>{{primaryLang}}<br />{{secondaryLang}}</td>
-              <td>{{primaryLangWord}}<br />{{secondaryLangWord}}</td>
-              <td>{{environment}}</td>
-              <td>{{executeAt}}</td>
-              <td>
-                <input type="hidden" value="{{{id}}}" />
-                <button class="deleteWordButton pure-button wh-pure-button-small wh-pure-button-error" type="button">X</button>
-              </td>
-            </tr>
+          <tr class="{{ternary executed 'wh-table-row-success' 'wh-table-row-failure'}}">
+            <td>{{primaryLang}}<br />{{secondaryLang}}</td>
+            <td>{{primaryLangWord}}<br />{{secondaryLangWord}}</td>
+            <td>{{environment}}</td>
+            <td>{{executeAt}}</td>
+            <td>
+              <input type="hidden" value="{{{id}}}" />
+              <button class="deleteWordButton wh-button wh-button-error wh-button-small" type="button">X</button>
+            </td>
+          </tr>
           {{/each}}
-          </tbody>
-        </table>
-      </div>
+        </tbody>
+      </table>
     </div>
 
-    {{{_script}}}
+    {{{devScript}}}
   </body>
 
 </html>

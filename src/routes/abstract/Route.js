@@ -14,7 +14,8 @@ class Route {
       BAD_REQUEST: 400,
       UNAUTHORIZED: 401,
       FORBIDDEN: 403,
-      NOT_FOUND: 404
+      NOT_FOUND: 404,
+      INTERNAL_SERVER_ERROR: 500
     };
   }
 
@@ -63,8 +64,11 @@ class Route {
   render(req, res, next, templateName, data) {
     res.locals.status = Route.Status.OK;
     res.locals.type = Route.Type.HTML;
-    res.locals.body = AppContext.instance().getTemplate().populate(templateName, data);
-    next();
+    AppContext.instance().getTemplate().populate(templateName, data)
+      .then(template => {
+        res.locals.body = {data: data, template: template};
+        next();
+      });
   }
 
   goTo(req, res, next, path, params) {
@@ -84,8 +88,28 @@ class Route {
     next();
   }
 
-  ok(req, res, next, body = {}, type = Route.Type.JSON) {
-    res.locals.status = Route.Status.OK;
+  ok(req, res, next, body, type) {
+    this._sendResponseWithData(req, res, next, Route.Status.OK, type, body);
+  }
+
+  badRequest(req, res, next, body, type) {
+    this._sendResponseWithData(req, res, next, Route.Status.BAD_REQUEST, type, body);
+  }
+
+  unauthorized(req, res, next, body, type) {
+    this._sendResponseWithData(req, res, next, Route.Status.UNAUTHORIZED, type, body);
+  }
+
+  forbidden(req, res, next, body, type) {
+    this._sendResponseWithData(req, res, next, Route.Status.FORBIDDEN, type, body);
+  }
+
+  internalServerError(req, res, next, body, type) {
+    this._sendResponseWithData(req, res, next, Route.Status.INTERNAL_SERVER_ERROR, type, body);
+  }
+
+  _sendResponseWithData(req, res, next, status, type = Route.Type.JSON, body = {}) {
+    res.locals.status = status;
     res.locals.type = type;
     res.locals.body = body;
     next();

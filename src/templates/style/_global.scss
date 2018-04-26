@@ -1,0 +1,22 @@
+@import './_constant';
+
+
+body {
+  cursor: default;
+  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: $SIZE_FONT_M;
+  color: $COLOR_DARK;
+}
+
+strong {
+  font-weight: bold;
+}
+
+.wh-content {
+  padding-top: $SIZE_PADDING_M;
+  padding-bottom: $SIZE_PADDING_M;
+}
+
+.wh-alert {
+  color: $COLOR_RED_DARK;
+}

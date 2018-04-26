@@ -9,7 +9,9 @@ class SendResponseMiddleware extends Middleware {
 
     res.status(res.locals.status);
     res.type(res.locals.type);
-    res.send(res.locals.body);
+    res.send(res.locals.type === 'html'
+      ? res.locals.body.template || res.locals.body
+      : res.locals.body);
   }
 }
 

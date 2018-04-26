@@ -73,7 +73,7 @@ class Validator {
       .all(expectedFieldNames.map(fieldName => {
         const fieldValue = actual[fieldName];
         const validateFunc = expected[fieldName].validateFunc || expected[fieldName];
-        const optional = !!(expected[fieldName].optional || expected[fieldName]);
+        const optional = !!expected[fieldName].optional;
         return this._validateField(fieldName, fieldValue, validateFunc, optional);
       }))
       .then(results => {

@@ -43,9 +43,13 @@ server {
   listen      8000 default_server;
   server_name _;
 
-  root /home/vagrant/WordHabitBackend/;
-
   location /media/ {
+    alias /home/vagrant/WordHabitBackend/media/;
+    autoindex off;
+  }
+
+  location /panel/static/ {
+    alias /home/vagrant/WordHabitBackend/dist/static/;
     autoindex off;
   }
 

@@ -3,6 +3,7 @@ const path = require('path');
 const uuidv4 = require('uuid/v4');
 const moment = require('moment');
 const Route = require('../abstract/Route');
+const HttpError = require('../../utils/HttpError');
 const AppContext = require('../../utils/AppContext');
 const Validator = require('../../utils/Validator');
 const Template = require('../../utils/Template');
@@ -15,7 +16,7 @@ class PanelWordRoute extends Route {
     this.authenticate(req, res, next)
       .then(isUserAuthenticated => {
         if (!isUserAuthenticated)
-          throw new Error('NOT_AUTHENTICATED');
+          throw new HttpError(HttpError.Code.FORBIDDEN);
       })
       .then(() => {
         this.render(req, res, next, Template.Name.WORD, {});
@@ -24,7 +25,15 @@ class PanelWordRoute extends Route {
         const message = err && (err.message || err);
         AppContext.instance().getLogger().error(
           `\`PanelWordRoute\` failure: "${message}"`);
-        this.goTo(req, res, next, '/panel/login', {error: message});
+        switch (err && err.code) {
+          case HttpError.Code.FORBIDDEN:
+            this.goTo(req, res, next, '/panel/login', {error: message});
+            break;
+          case HttpError.Code.INTERNAL_SERVER_ERROR:
+          default:
+            this.render(req, res, next, Template.Name.WORD, {error: message});
+            break;
+        }
       });
   }
 
@@ -42,7 +51,7 @@ class PanelWordRoute extends Route {
     this.authenticate(req, res, next)
       .then(isUserAuthenticated => {
         if (!isUserAuthenticated)
-          throw new Error('NOT_AUTHENTICATED');
+          throw new HttpError(HttpError.Code.FORBIDDEN);
       })
       .then(() => {
         return AppContext.instance().getValidator().validate({
@@ -69,7 +78,7 @@ class PanelWordRoute extends Route {
       })
       .then(result => {
         if (!result.isValid)
-          throw new Error('INVALID_FORM');
+          throw new HttpError(HttpError.Code.BAD_REQUEST, 'Form contains invalid fields');
       })
       .then(() => {
         const word = new WordModel();
@@ -91,21 +100,24 @@ class PanelWordRoute extends Route {
         return word.insert();
       })
       .then(() => {
-        this.goTo(req, res, next, '/panel/dashboard');
+        this.ok(req, res, next);
       })
       .catch(err => {
         const message = err && err.message;
         AppContext.instance().getLogger().error(
           `\`PanelWordRoute\` failure: "${message}"`);
-        switch (message) {
-          case 'NOT_AUTHENTICATED':
+        if (files && files.imageFile && files.imageFile.path)
+          fs.unlink(files.imageFile.path, Function.prototype);
+        switch (err && err.code) {
+          case HttpError.Code.BAD_REQUEST:
+            this.badRequest(req, res, next, {error: message});
+            break;
+          case HttpError.Code.FORBIDDEN:
             this.goTo(req, res, next, '/panel/login', {error: message});
             break;
-          case 'INVALID_FORM':
+          case HttpError.Code.INTERNAL_SERVER_ERROR:
           default:
-            if (files && files.imageFile && files.imageFile.path)
-              fs.unlink(files.imageFile.path, Function.prototype);
-            this.render(req, res, next, Template.Name.WORD, {error: message});
+            this.internalServerError(req, res, next, {error: message});
             break;
         }
       });
@@ -115,7 +127,7 @@ class PanelWordRoute extends Route {
     this.authenticate(req, res, next)
       .then(isUserAuthenticated => {
         if (!isUserAuthenticated)
-          throw new Error('NOT_AUTHENTICATED');
+          throw new HttpError(HttpError.Code.FORBIDDEN);
       })
       .then(() => {
         return WordModel.deleteOne(req.params.id);
@@ -127,7 +139,15 @@ class PanelWordRoute extends Route {
         const message = err && (err.message || err);
         AppContext.instance().getLogger().error(
           `\`PanelWordRoute\` failure: "${message}"`);
-        this.goTo(req, res, next, '/panel/login', {error: message});
+        switch (err && err.code) {
+          case HttpError.Code.FORBIDDEN:
+            this.goTo(req, res, next, '/panel/login', {error: message});
+            break;
+          case HttpError.Code.INTERNAL_SERVER_ERROR:
+          default:
+            this.internalServerError(req, res, next, {error: message});
+            break;
+        }
       });
   }
 }

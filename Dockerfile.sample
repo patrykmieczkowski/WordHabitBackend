@@ -22,9 +22,13 @@ RUN echo 'server {\n\
   listen      80 default_server;\n\
   server_name _;\n\
 \n\
-  root /www/data/WordHabitBackend/;\n\
-\n\
   location /media/ {\n\
+    alias /www/data/WordHabitBackend/media/;\n\
+    autoindex off;\n\
+  }\n\
+\n\
+  location /static/ {\n\
+    alias /www/data/WordHabitBackend/static/;\n\
     autoindex off;\n\
   }\n\
 \n\
@@ -42,6 +46,7 @@ RUN service nginx restart
 RUN git clone https://github.com/patrykmieczkowski/WordHabitBackend.git /root/WordHabitBackend
 RUN rm -rf /root/WordHabitBackend/media
 RUN mkdir -p /www/data/WordHabitBackend
+RUN cp /root/WordHabitBackend/dist/static /www/data/WordHabitBackend/static
 RUN chmod -R 0755 /www
 
 # Configuration
@@ -70,7 +75,7 @@ RUN chmod +x /root/init.sh
 RUN echo '{\n\
   "apps": [{\n\
     "name": "wordhabitbackend",\n\
-    "script": "/root/WordHabitBackend/src/app.js",\n\
+    "script": "/root/WordHabitBackend/dist/app.js",\n\
     "watch": true,\n\
     "log_file": "/tmp/WordHabitBackend.log",\n\
     "out_file": "/dev/null",\n\

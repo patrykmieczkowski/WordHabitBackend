@@ -59,7 +59,7 @@ const panelWordRoute = new PanelWordRoute();
 const router = new Router();
 router.addEndpoint(Router.Method.GET, '/', rootRoute, emptyMiddleware);
 router.addEndpoint(Router.Method.GET, '/panel/login', panelLoginRoute, emptyMiddleware);
-router.addEndpoint(Router.Method.POST, '/panel/login', panelLoginRoute, urlencodedMiddleware);
+router.addEndpoint(Router.Method.POST, '/panel/login', panelLoginRoute, jsonMiddleware);
 router.addEndpoint(Router.Method.GET, '/panel/dashboard', panelDashboardRoute, emptyMiddleware);
 router.addEndpoint(Router.Method.GET, '/panel/word', panelWordRoute, emptyMiddleware);
 router.addEndpoint(Router.Method.POST, '/panel/word', panelWordRoute, multipartMiddleware);

@@ -1,0 +1,31 @@
+@import './_constant';
+
+
+.wh-table {
+  table-layout: fixed;
+  width: 100%;
+
+  thead tr {
+    font-weight: bold;
+    background-color: lighten($COLOR_DIVIDER, 10%);
+  }
+
+  tr {
+
+    &.wh-table-row-success {
+      background-color: $COLOR_GREEN_LIGHT;
+    }
+
+    &.wh-table-row-failure {
+      background-color: $COLOR_RED_LIGHT;
+    }
+  }
+
+  th,
+  td {
+    overflow: auto;
+    vertical-align: middle;
+    border: 1px solid $COLOR_DIVIDER;
+    padding: $SIZE_PADDING_S;
+  }
+}

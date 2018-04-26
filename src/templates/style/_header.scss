@@ -1,0 +1,96 @@
+@import './_constant';
+@import './_util';
+
+
+.wh-header {
+  position: relative;
+  height: $SIZE_HEADER_HEIGHT;
+  background-color: $COLOR_GREEN;
+
+  & > * {
+    height: 100%;
+  }
+}
+
+.wh-logo {
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: top;
+  box-sizing: border-box;
+  padding: ($SIZE_HEADER_HEIGHT - $SIZE_FONT_XL) / 2;
+  font-size: $SIZE_FONT_XL;
+  color: $COLOR_LIGHT;
+  transition: background-color 250ms ease;
+
+  &:hover {
+    background-color: on-hover($COLOR_GREEN);
+  }
+
+  &:after {
+    content: 'WordHabit';
+  }
+}
+
+.wh-navlink {
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: top;
+  box-sizing: border-box;
+  text-align: left;
+  text-decoration: none;
+  padding: ($SIZE_HEADER_HEIGHT - $SIZE_FONT_L) / 2;
+  font-size: $SIZE_FONT_L;
+  color: $COLOR_LIGHT;
+  transition: background-color 250ms ease;
+
+  &.active {
+    text-decoration: underline;
+  }
+
+  &:hover {
+    background-color: on-hover($COLOR_GREEN);
+  }
+}
+
+.wh-dropdown {
+  position: absolute;
+  cursor: pointer;
+  display: inline-block;
+  overflow: visible;
+  z-index: 999;
+  top: 0;
+  right: 0;
+  width: $SIZE_HEADER_HEIGHT;
+  height: $SIZE_HEADER_HEIGHT;
+  padding: 0 $SIZE_PADDING_M;
+
+  & > svg {
+    width: $SIZE_HEADER_HEIGHT;
+    height: $SIZE_HEADER_HEIGHT;
+  }
+
+  &.active {
+    background-color: $COLOR_GREEN_DARK;
+  }
+}
+
+.wh-dropdown-navlinks {
+  position: absolute;
+  overflow: hidden;
+  right: 0;
+  width: 175px;
+  height: 0;
+  transition: height 250ms ease;
+  text-align: center;
+  background-color: $COLOR_GREEN_DARK;
+
+  .wh-dropdown.active & {
+    height: $SIZE_HEADER_HEIGHT * 2 + ($SIZE_PADDING_L / 2) * 2;
+  }
+
+  & > .wh-navlink {
+    padding: $SIZE_PADDING_L;
+    width: 100%;
+    text-align: center;
+  }
+}

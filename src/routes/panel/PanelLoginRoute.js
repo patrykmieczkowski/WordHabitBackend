@@ -1,6 +1,7 @@
 const uuidv4 = require('uuid/v4');
 const bcrypt = require('bcrypt');
 const Route = require('../abstract/Route');
+const HttpError = require('../../utils/HttpError');
 const AppContext = require('../../utils/AppContext');
 const Template = require('../../utils/Template');
 const AdminModel = require('../../model/AdminModel');
@@ -24,13 +25,13 @@ class PanelLoginRoute extends Route {
     AdminModel.selectOne(req.body.username)
       .then(admin => {
         if (!admin)
-          throw new Error('INVALID_USERNAME_OR_PASSWORD');
+          throw new HttpError(HttpError.Code.UNAUTHORIZED);
         context.admin = admin;
         return bcrypt.compare(req.body.password, admin.getPassword());
       })
       .then(result => {
         if (!result)
-          throw new Error('INVALID_USERNAME_OR_PASSWORD');
+          throw new HttpError(HttpError.Code.UNAUTHORIZED);
         return AdminSessionModel.selectOne(context.admin.getUsername())
       })
       .then(adminSession => {
@@ -50,13 +51,21 @@ class PanelLoginRoute extends Route {
           expire: new Date(2147483647000).toUTCString(),
           httpOnly: true
         });
-        this.goTo(req, res, next, '/panel/dashboard');
+        this.ok(req, res, next);
       })
       .catch(err => {
         const message = err && err.message;
         AppContext.instance().getLogger().error(
           `\`PanelLoginRoute\` failure: "${message}"`);
-        this.render(req, res, next, Template.Name.LOGIN, {error: message});
+        switch (err && err.code) {
+          case HttpError.Code.UNAUTHORIZED:
+            this.unauthorized(req, res, next, {error: message});
+            break;
+          case HttpError.Code.INTERNAL_SERVER_ERROR:
+          default:
+            this.internalServerError(req, res, next, {error: message});
+            break;
+        }
       });
   }
 }

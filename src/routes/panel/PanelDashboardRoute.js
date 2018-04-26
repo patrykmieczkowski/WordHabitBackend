@@ -1,4 +1,5 @@
 const Route = require('../abstract/Route');
+const HttpError = require('../../utils/HttpError');
 const AppContext = require('../../utils/AppContext');
 const Template = require('../../utils/Template');
 const WordModel = require('../../model/WordModel');
@@ -10,7 +11,7 @@ class PanelDashboardRoute extends Route {
     this.authenticate(req, res, next)
       .then(isUserAuthenticated => {
         if (!isUserAuthenticated)
-          throw new Error('NOT_AUTHENTICATED');
+          throw new HttpError(HttpError.Code.FORBIDDEN);
       })
       .then(() => {
         return WordModel.selectAll();
@@ -24,7 +25,15 @@ class PanelDashboardRoute extends Route {
         const message = err && err.message;
         AppContext.instance().getLogger().error(
           `\`PanelDashboardRoute\` failure: "${message}"`);
-        this.goTo(req, res, next, '/panel/login', {error: message});
+        switch (err && err.code) {
+          case HttpError.Code.FORBIDDEN:
+            this.goTo(req, res, next, '/panel/login', {error: message});
+            break;
+          case HttpError.Code.INTERNAL_SERVER_ERROR:
+          default:
+            this.render(req, res, next, Template.Name.DASHBOARD, {error: message});
+            break;
+        }
       });
   }
 }

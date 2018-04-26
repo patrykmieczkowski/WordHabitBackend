@@ -1,50 +1,38 @@
 <html>
 
   <head>
+    <meta name="robots" content="noindex, nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>WordHabit Administration Panel - Login</title>
-    {{{_style}}}
+    {{{devStyle}}}
   </head>
 
-  <body>
-    <div class="pure-g wh-pure-g-menu">
-      <div class="pure-u-1 wh-pure-u-container">
-        <div class="pure-menu pure-menu-horizontal">
-          <a class="pure-menu-heading pure-menu-link" href="/panel/login">WordHabit</a>
-        </div>
+  <body class="wh-login-page">
+    <header class="wh-header">
+      <div class="wh-container">
+        <span class="wh-logo"></span>
       </div>
+    </header>
+
+    <div class="wh-content wh-container">
+      <form class="wh-form" novalidate>
+        <fieldset>
+          <legend>Login</legend>
+
+          <label for="username">Username: </label>
+          <input id="username" type="text" name="username" />
+
+          <label for="password">Password: </label>
+          <input id="password" type="password" name="password" />
+
+          <input class="wh-button" type="submit" value="Login" />
+
+          <strong class="wh-alert">{{{error}}}</strong>
+        </fieldset>
+      </form>
     </div>
 
-    <div class="pure-g">
-      <div class="pure-u-1 wh-pure-u-container wh-pure-u-content">
-        <form
-          class="pure-form pure-form-stacked"
-          action="/panel/login"
-          method="post"
-          enctype="application/x-www-form-urlencoded">
-
-          <fieldset>
-            <legend>Login</legend>
-
-            <label for="username">Username: </label>
-            <input id="username" type="text" name="username" />
-
-            <label for="password">Password: </label>
-            <input id="password" type="password" name="password" />
-
-            <br />
-
-            <input class="pure-button pure-button-primary" type="submit" value="Login" />
-
-            {{#if error}}
-              <strong class="pure-form-message wh-pure-alert">{{{error}}}</strong>
-            {{/if}}
-          </fieldset>
-        </form>
-      </div>
-    </div>
-
-    {{{_script}}}
+    {{{devScript}}}
   </body>
 
 </html>

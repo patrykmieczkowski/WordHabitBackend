@@ -1,114 +1,100 @@
 <html>
 
   <head>
+    <meta name="robots" content="noindex, nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-    <title>WordHabit Administration Panel - Word</title>
-    {{{_style}}}
+    <title>WordHabit Administration Panel - New word</title>
+    {{{devStyle}}}
   </head>
 
-  <body>
-    <div class="pure-g wh-pure-g-menu">
-      <div class="pure-u-1 wh-pure-u-container">
-        <div class="pure-menu pure-menu-horizontal">
-          <a class="pure-menu-heading pure-menu-link" href="/panel/dashboard">WordHabit</a>
-          <ul class="pure-menu-list">
-            <li class="pure-menu-item">
-              <a href="/panel/dashboard" class="pure-menu-link">Dashboard</a>
-            </li>
-            <li class="pure-menu-item pure-menu-selected">
-              <a href="/panel/word" class="pure-menu-link">New word</a>
-            </li>
-          </ul>
-        </div>
+  <body class="wh-word-page">
+    <header class="wh-header">
+      <div class="wh-container">
+        <span class="wh-logo"></span>
+        <a class="wh-navlink" href="/panel/dashboard">Dashboard</a>
+        <a class="wh-navlink active" href="/panel/word">New word</a>
       </div>
+    </header>
+
+    <div class="wh-content wh-container">
+      <form class="wh-form" novalidate>
+        <fieldset>
+          <label for="environment">Environment:</label>
+          <select id="environment" name="environment">
+            <option value="PROD" selected>PROD</option>
+            <option value="QA">QA</option>
+          </select>
+        </fieldset>
+
+        <fieldset>
+          <legend>Primary language</legend>
+
+          <label for="primaryLang">Primary language:</label>
+          <select id="primaryLang" name="primaryLang">
+            <option value="EN" selected>English</option>
+            <option value="PL">Polski</option>
+          </select>
+
+          <label for="primaryLangWord">Primary language word:</label>
+          <input id="primaryLangWord" type="text" name="primaryLangWord" />
+
+          <label for="primaryLangDescription">Primary language description:</label>
+          <textarea id="primaryLangDescription" name="primaryLangDescription"></textarea>
+        </fieldset>
+
+        <fieldset>
+          <legend>Secondary language</legend>
+
+          <label for="secondaryLang">Secondary language:</label>
+          <select id="secondaryLang" name="secondaryLang">
+            <option value="EN">English</option>
+            <option value="PL" selected>Polski</option>
+          </select>
+
+          <label for="secondaryLangWord">Secondary language word:</label>
+          <input id="secondaryLangWord" type="text" name="secondaryLangWord" />
+
+          <label for="secondaryLangDescription">Secondary language description:</label>
+          <textarea id="secondaryLangDescription" name="secondaryLangDescription"></textarea>
+        </fieldset>
+
+        <fieldset>
+          <legend>Image</legend>
+
+          <label for="imageUrlRadio" class="pure-radio">
+            <input id="imageUrlRadio" type="radio" name="imageOption" value="URL" checked />
+            Image URL
+          </label>
+          <input id="imageUrl" type="url" name="imageUrl" />
+
+          <label for="imageFileRadio" class="pure-radio">
+            <input id="imageFileRadio" type="radio" name="imageOption" value="FILE">
+            Image file
+          </label>
+          <input id="imageFile" type="file" name="imageFile" disabled />
+        </fieldset>
+
+        <fieldset>
+          <legend>Execution</legend>
+
+          <label for="executeAtDate">Execution date:</label>
+          <input id="executeAtDate" type="date" name="executeAtDate" />
+
+          <label for="executeAtTime">Execution time:</label>
+          <input id="executeAtTime" type="time" name="executeAtTime" />
+
+          <input id="timezoneOffset" type="hidden" name="timezoneOffset" />
+        </fieldset>
+
+        <fieldset>
+          <input class="wh-button" type="submit" value="Add" />
+
+          <strong class="wh-alert">{{{error}}}</strong>
+        </fieldset>
+      </form>
     </div>
 
-    <div class="pure-g">
-      <div class="pure-u-1 wh-pure-u-container wh-pure-u-content">
-        <form
-          class="pure-form pure-form-stacked"
-          action="/panel/word"
-          method="post"
-          enctype="multipart/form-data">
-
-          <fieldset>
-            <legend>New word</legend>
-
-            <label for="environment">Environment:</label>
-            <select id="environment" name="environment">
-              <option value="QA">QA</option>
-              <option value="PROD" selected>PROD</option>
-            </select>
-
-            <br />
-
-            <label for="primaryLang">Primary language:</label>
-            <select id="primaryLang" name="primaryLang">
-              <option value="PL">Polski</option>
-              <option value="EN" selected>English</option>
-            </select>
-
-            <label for="primaryLangWord">Primary language word:</label>
-            <input id="primaryLangWord" type="text" name="primaryLangWord" />
-
-            <label for="primaryLangDescription">Primary language description:</label>
-            <textarea id="primaryLangDescription" name="primaryLangDescription"></textarea>
-
-            <br />
-
-            <label for="secondaryLang">Secondary language:</label>
-            <select id="secondaryLang" name="secondaryLang">
-              <option value="PL" selected>Polski</option>
-              <option value="EN">English</option>
-            </select>
-
-            <label for="secondaryLangWord">Secondary language word:</label>
-            <input id="secondaryLangWord" type="text" name="secondaryLangWord" />
-
-            <label for="secondaryLangDescription">Secondary language description:</label>
-            <textarea id="secondaryLangDescription" name="secondaryLangDescription"></textarea>
-
-            <br />
-            <br />
-
-            <label for="imageUrlRadio" class="pure-radio">
-              <input id="imageUrlRadio" type="radio" name="imageOption" value="URL" checked />
-              Image URL
-            </label>
-            <input id="imageUrl" type="url" name="imageUrl" />
-
-            <label for="imageFileRadio" class="pure-radio">
-              <input id="imageFileRadio" type="radio" name="imageOption" value="FILE">
-              Image file
-            </label>
-            <input id="imageFile" type="file" name="imageFile" disabled />
-
-            <br />
-            <br />
-
-            <label for="executeAtDate">Execution date:</label>
-            <input id="executeAtDate" type="date" name="executeAtDate" />
-
-            <label for="executeAtTime">Execution time:</label>
-            <input id="executeAtTime" type="time" name="executeAtTime" />
-
-            <input id="timezoneOffset" type="hidden" name="timezoneOffset" />
-
-            <br />
-            <br />
-
-            <input class="pure-button pure-button-primary" type="submit" value="Add" />
-
-            {{#if error}}
-              <strong class="pure-form-message wh-pure-alert">{{{error}}}</strong>
-            {{/if}}
-          </fieldset>
-
-        </form>
-      </div>
-    </div>
-
-    {{{_script}}}
+    {{{devScript}}}
   </body>
 
 </html>

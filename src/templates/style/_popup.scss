@@ -1,0 +1,81 @@
+@import './_constant';
+
+
+.wh-popup-wrapper {
+  position: fixed;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  background-color: $OVERLAY_DARK;
+
+  transition: opacity 250ms ease;
+  opacity: 0;
+  &.fade-in {
+    opacity: 1;
+  }
+  &.fade-out {
+    opacity: 0;
+  }
+}
+
+.wh-popup-aligner {
+  display: inline-block;
+  vertical-align: middle;
+  width: 0;
+  height: 100%;
+}
+
+.wh-popup {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: left;
+  box-sizing: border-box;
+  width: calc(100% - #{2 * $SIZE_MARGIN_M});
+  margin: $SIZE_MARGIN_M;
+
+  @media (min-width: 768px) {
+    width: 500px;
+  }
+
+  &.wh-popup-confirmation {
+    border: 1px solid $COLOR_GREEN_DARK;
+    background-color: $COLOR_GREEN_LIGHT;
+
+    .wh-popup-title {
+      background-color: $COLOR_GREEN_DARK;
+    }
+  }
+
+  &.wh-popup-error {
+    border: 1px solid $COLOR_RED_DARK;
+    background-color: $COLOR_RED_LIGHT;
+
+    .wh-popup-title {
+      background-color: $COLOR_RED_DARK;
+    }
+  }
+
+  & > * {
+    padding: $SIZE_PADDING_M;
+  }
+}
+
+.wh-popup-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: $SIZE_FONT_L;
+  color: $COLOR_LIGHT;
+}
+
+.wh-popup-content {
+  text-align: center;
+}
+
+.wh-popup-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  border-top: 1px solid $COLOR_DIVIDER;
+}
