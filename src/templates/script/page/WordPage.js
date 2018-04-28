@@ -1,6 +1,7 @@
 import Ajax from '../utils/Ajax';
 import Router from '../utils/Router';
 import Loader from '../component/Loader';
+import Popup from '../component/Popup';
 import Page from './abstract/Page';
 
 
@@ -91,8 +92,10 @@ export default class WordPage extends Page {
           router.goToPage(Router.Page.DASHBOARD);
         })
         .catch(response => {
-          wordFormAlert.innerHTML = response && response.error;
+          const errorMessage = response && response.error;
+          wordFormAlert.innerHTML = errorMessage;
           loader.finish();
+          new Popup(Popup.Type.ERROR, 'An error occurred', errorMessage);
         });
     };
   }

@@ -5,16 +5,12 @@ import Page from './abstract/Page';
 
 export default class DashboardPage extends Page {
 
-  static get _WORD_LIST_ID() {
-    return 'wordList';
+  static get _WORD_DETAILS_BUTTON_CLASS() {
+    return 'wordDetailsButton';
   }
 
   static get _DELETE_WORD_BUTTON_CLASS() {
     return 'deleteWordButton';
-  }
-
-  static get _REPLACE_BREAK_LINES_WITH_STRING() {
-    return ' / ';
   }
 
   static get _ALERT_CLASS() {
@@ -23,25 +19,45 @@ export default class DashboardPage extends Page {
 
   init() {
     super.init();
-    this.initExecuteAtCells();
+    this.initWordDetailsButtons();
     this.initDeleteWordButtons();
   }
 
-  initExecuteAtCells() {
-    const htmlUtils = this.getContext()[Page.Context.HTML_UTILS];
+  initWordDetailsButtons() {
     const dateUtils = this.getContext()[Page.Context.DATE_UTILS];
-    const wordList = document.getElementById(DashboardPage._WORD_LIST_ID);
-    const wordListCells = htmlUtils.collectionToArray(
-      wordList.getElementsByTagName('td'));
+    const htmlUtils = this.getContext()[Page.Context.HTML_UTILS];
+    const wordDetailsButtons = htmlUtils.collectionToArray(
+      document.getElementsByClassName(DashboardPage._WORD_DETAILS_BUTTON_CLASS));
 
-    wordListCells
-      .filter((elem, idx) => idx % 5 === 3)
-      .forEach(elem => {
-        const date = new Date(parseInt(elem.innerHTML));
-        elem.innerHTML =
-          `${dateUtils.getDayOfTheWeek(date.getDay())} ${dateUtils.getMonth(date.getMonth())} ` +
-          `${dateUtils.padZeros(date.getDate(), 2)} ${dateUtils.padZeros(date.getFullYear(), 4)} ` +
-          `${dateUtils.padZeros(date.getHours(), 2)}:${dateUtils.padZeros(date.getMinutes(), 2)}:${dateUtils.padZeros(date.getSeconds(), 2)}`;
+    wordDetailsButtons
+      .forEach(wordDetailsButton => {
+        wordDetailsButton.onclick = e => {
+          const details = JSON.parse(
+            e.currentTarget.parentElement.parentElement.dataset.details);
+
+          const popupType = Popup.Type.INFORMATION;
+          const popupTitle = 'Word details';
+          const popupContent =
+            `<div class="label">Environment:</div>` +
+            `<strong>${details.environment}</strong>` +
+            `<div class="divided">` +
+              `<strong>${details.primaryLang}</strong>` +
+              `<strong>${details.secondaryLang}</strong>` +
+              `<strong>${details.primaryLangWord}</strong>` +
+              `<strong>${details.secondaryLangWord}</strong>` +
+              `<strong>${details.primaryLangDescription}</strong>` +
+              `<strong>${details.secondaryLangDescription}</strong>` +
+            `</div>` +
+            `<div class="label">Executed:</div>` +
+            `<strong>${details.executed}</strong>` +
+            `<div class="label">Execute at:</div>` +
+            `<strong>${dateUtils.formatDate(details.executeAt)}<br />(${dateUtils.getRangeBetween(details.executeAt, Date.now()).formattedRange})</strong>` +
+            `<div class="label">Image:</div>` +
+            `<img src="${details.imageUrl}" />`;
+
+          new Popup(popupType, popupTitle, popupContent, undefined, undefined, 'wh-popup-word-details');
+          e.target.blur();
+        };
       });
   }
 
@@ -57,26 +73,25 @@ export default class DashboardPage extends Page {
     deleteWordButtons
       .forEach(deleteWordButton => {
         deleteWordButton.onclick = e => {
-          const wordsRaw = e.target
-            .parentElement
-            .previousElementSibling
-            .previousElementSibling
-            .previousElementSibling
-            .innerHTML;
-          const words = htmlUtils.replaceBreakLinesWith(
-            wordsRaw, DashboardPage._REPLACE_BREAK_LINES_WITH_STRING);
+          const details = JSON.parse(
+            e.currentTarget.parentElement.parentElement.dataset.details);
+          const words =
+            `${details.primaryLangWord} / ${details.secondaryLangWord}`;
 
           const popupType = Popup.Type.CONFIRMATION;
           const popupTitle = 'Remove word';
           const popupContent = `Are you sure you want to remove the word <strong>${words}</strong>?`;
           const popupYesHandler = () => {
             const loader = new Loader(document.body);
-            const wordId = e.target.previousElementSibling.value;
+            const wordId = details.id;
+
             ajax.DELETE(`/panel/word/${wordId}`)
               .then(() => location.reload())
               .catch(response => {
-                alertMessage.innerHTML = response && response.error;
+                const errorMessage = response && response.error;
+                alertMessage.innerHTML = errorMessage;
                 loader.finish();
+                new Popup(Popup.Type.ERROR, 'An error occurred', errorMessage);
               });
           };
 

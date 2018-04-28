@@ -6,7 +6,8 @@ export default class Popup extends Component {
   static get Type() {
     return {
       CONFIRMATION: 'confirmation',
-      ERROR: 'error'
+      ERROR: 'error',
+      INFORMATION: 'information'
     }
   }
 
@@ -47,12 +48,27 @@ export default class Popup extends Component {
     );
   }
 
-  constructor(type, title, content, yesHandler, noHandler) {
+  static get _INFORMATION_TEMPLATE() {
+    return (
+      '<div class="{{className}} {{className}}-information">' +
+        '<div class="{{className}}-title">' +
+          '<h2 class="{{className}}-title-text">{{title}}</h2>' +
+        '</div>' +
+        '<div class="{{className}}-content">{{content}}</div>' +
+        '<div class="{{className}}-buttons">' +
+          '<button class="{{className}}-buttons-ok wh-button">OK</button>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  constructor(type, title, content, yesHandler, noHandler, additionalClassName) {
     super();
     this._title = title;
     this._content = content;
     this._yesHandler = yesHandler || Function.prototype;
     this._noHandler = noHandler || Function.prototype;
+    this._additionalClassName = additionalClassName || '';
 
     this._wrapper = null;
 
@@ -62,6 +78,9 @@ export default class Popup extends Component {
         break;
       case Popup.Type.ERROR:
         this._showError();
+        break;
+      case Popup.Type.INFORMATION:
+        this._showInformation();
         break;
       default:
         break;
@@ -93,9 +112,22 @@ export default class Popup extends Component {
     this._addButtonHandler('ok', this._yesHandler);
   }
 
+  _showInformation() {
+    const template = Popup._INFORMATION_TEMPLATE;
+    const interpolatedTemplate = this._interpolateTemplate(template, {
+      className: Popup._CLASS_NAME,
+      title: this._title,
+      content: this._content
+    });
+
+    this._mount(interpolatedTemplate);
+    this._addButtonHandler('ok', this._yesHandler);
+  }
+
   _mount(interpolatedTemplate) {
     this._wrapper = document.createElement('div');
     this._wrapper.className = `${Popup._CLASS_NAME}-wrapper`;
+    this._wrapper.className += this._additionalClassName ? ` ${this._additionalClassName}` : '';
     this._wrapper.innerHTML = '<div class="wh-popup-aligner"></div>' + interpolatedTemplate;
     this._wrapper.onclick = e => e.target === this._wrapper
       ? this._unmount()

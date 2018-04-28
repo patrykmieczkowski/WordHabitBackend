@@ -22,23 +22,44 @@
       <table id="wordList" class="wh-table">
         <thead>
           <tr>
-            <th>Lang</th>
+            <th>Environment</th>
+            <th>Language</th>
             <th>Word</th>
-            <th>Env</th>
-            <th>Date</th>
-            <th>Del</th>
+            <th>Details</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
           {{#each words}}
-          <tr class="{{ternary executed 'wh-table-row-success' 'wh-table-row-failure'}}">
-            <td>{{primaryLang}}<br />{{secondaryLang}}</td>
-            <td>{{primaryLangWord}}<br />{{secondaryLangWord}}</td>
+          <tr
+            class="{{ternary executed 'wh-table-row-success' 'wh-table-row-failure'}}"
+            data-details="{{jsonStringify this}}">
             <td>{{environment}}</td>
-            <td>{{executeAt}}</td>
             <td>
-              <input type="hidden" value="{{{id}}}" />
-              <button class="deleteWordButton wh-button wh-button-error wh-button-small" type="button">X</button>
+              {{primaryLang}}
+              <div class="wh-table-cell-divider"></div>
+              {{secondaryLang}}
+            </td>
+            <td>
+              {{primaryLangWord}}
+              <div class="wh-table-cell-divider"></div>
+              {{secondaryLangWord}}
+            </td>
+            <td>
+              <button class="wordDetailsButton wh-button" type="button">
+                <svg fill="#FFFFFF" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M0 0h24v24H0z" fill="none"/>
+                  <path d="M20 19.59V8l-6-6H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c.45 0 .85-.15 1.19-.4l-4.43-4.43c-.8.52-1.74.83-2.76.83-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5c0 1.02-.31 1.96-.83 2.75L20 19.59zM9 13c0 1.66 1.34 3 3 3s3-1.34 3-3-1.34-3-3-3-3 1.34-3 3z"/>
+                </svg>
+              </button>
+            </td>
+            <td>
+              <button class="deleteWordButton wh-button wh-button-error" type="button">
+                <svg fill="#FFFFFF" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
+                  <path d="M0 0h24v24H0z" fill="none" />
+                </svg>
+              </button>
             </td>
           </tr>
           {{/each}}

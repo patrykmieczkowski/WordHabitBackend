@@ -54,6 +54,8 @@ class Template {
   _registerHelpers() {
     handlebars.registerHelper(
       'ternary', (condition, onTrue, onFalse) => condition ? onTrue : onFalse);
+    handlebars.registerHelper(
+      'jsonStringify', obj => JSON.stringify(obj));
   }
 
   _getDevStyle() {

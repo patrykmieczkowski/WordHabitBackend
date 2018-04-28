@@ -1,8 +1,9 @@
-@import './_constant';
+@import '../_constant';
 
 
 .wh-popup-wrapper {
   position: fixed;
+  overflow: auto;
   text-align: center;
   width: 100%;
   height: 100%;
@@ -35,12 +36,14 @@
   box-sizing: border-box;
   width: calc(100% - #{2 * $SIZE_MARGIN_M});
   margin: $SIZE_MARGIN_M;
+  border-radius: $SIZE_BORDER_RADIUS;
 
   @media (min-width: 768px) {
     width: 500px;
   }
 
-  &.wh-popup-confirmation {
+  &.wh-popup-confirmation,
+  &.wh-popup-information {
     border: 1px solid $COLOR_GREEN_DARK;
     background-color: $COLOR_GREEN_LIGHT;
 

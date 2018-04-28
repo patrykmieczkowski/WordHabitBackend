@@ -68,6 +68,7 @@ class WordModel extends Model {
   serialize() {
     let serializedObj = Model.prototype.serialize.call(this);
     serializedObj.executeAt = serializedObj.executeAt && serializedObj.executeAt.getTime();
+    serializedObj.imageUrl = this.getFullImageUrl();
     return serializedObj;
   }
 

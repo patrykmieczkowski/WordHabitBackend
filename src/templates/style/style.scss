@@ -1,14 +1,20 @@
+// reset
 @import './_reset';
 
+// common
 @import './_global';
 @import './_container';
-@import './_header';
-@import './_form';
-@import './_table';
 
-@import './_loader';
-@import './_popup';
+// element
+@import './element/_header';
+@import './element/_form';
+@import './element/_table';
 
-@import './_login-page';
-@import './_dashboard-page';
-@import './_word-page';
+// component
+@import './component/_loader';
+@import './component/_popup';
+
+// page
+@import './page/_login-page';
+@import './page/_dashboard-page';
+@import './page/_word-page';

@@ -1,4 +1,4 @@
-@import './_constant';
+@import '../_constant';
 
 
 .wh-table {
@@ -10,7 +10,13 @@
     background-color: lighten($COLOR_DIVIDER, 10%);
   }
 
-  tr {
+  thead th {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  tbody tr {
 
     &.wh-table-row-success {
       background-color: $COLOR_GREEN_LIGHT;
@@ -21,11 +27,18 @@
     }
   }
 
+  tbody td {
+    overflow: auto;
+  }
+
   th,
   td {
-    overflow: auto;
     vertical-align: middle;
     border: 1px solid $COLOR_DIVIDER;
     padding: $SIZE_PADDING_S;
   }
+}
+
+.wh-table-cell-divider {
+  margin: $SIZE_MARGIN_XS 0;
 }
