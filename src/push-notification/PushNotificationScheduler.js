@@ -69,6 +69,7 @@ class PushNotificationScheduler {
     return TopicModel.selectOne(
       word.getPrimaryLang(),
       word.getSecondaryLang(),
+      word.getDifficulty(),
       word.getEnvironment()
     );
   }

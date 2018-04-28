@@ -65,6 +65,7 @@ class PanelWordRoute extends Route {
         return AppContext.instance().getValidator().validate({
           primaryLang: Validator.notEmptyString,
           secondaryLang: Validator.notEmptyString,
+          difficulty: Validator.notEmptyString,
           environment: Validator.notEmptyString,
           primaryLangWord: Validator.notEmptyString,
           primaryLangDescription: Validator.notEmptyString,
@@ -107,6 +108,7 @@ class PanelWordRoute extends Route {
         word.setId(uuidv4());
         word.setPrimaryLang(fields.primaryLang);
         word.setSecondaryLang(fields.secondaryLang);
+        word.setDifficulty(fields.difficulty);
         word.setEnvironment(fields.environment);
         word.setPrimaryLangWord(fields.primaryLangWord);
         word.setPrimaryLangDescription(fields.primaryLangDescription);

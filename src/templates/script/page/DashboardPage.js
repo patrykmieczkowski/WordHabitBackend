@@ -40,6 +40,8 @@ export default class DashboardPage extends Page {
           const popupContent =
             `<div class="label">Environment:</div>` +
             `<strong>${details.environment}</strong>` +
+            `<div class="label">Difficulty:</div>` +
+            `<strong>${details.difficulty}</strong>` +
             `<div class="divided">` +
               `<strong>${details.primaryLang}</strong>` +
               `<strong>${details.secondaryLang}</strong>` +

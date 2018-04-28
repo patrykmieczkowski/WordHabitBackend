@@ -90,5 +90,5 @@ When deploying for the first time, the database migrations have to be applied:
     >>># ./migrate.sh "../migrations/cassandra/08-create-table-topic.cql"
     >>># ./migrate.sh "../migrations/cassandra/09-create-table-word.cql"
     >>># ./add_service_account_key.sh "../serviceAccountKey.json" "https://database-url.firebaseio.com/"
-    >>># ./add_topic.sh "english" "EN" "PL" "PROD"
+    >>># ./add_topic.sh "english" "EN" "PL" "NORMAL" "PROD"
     >>># ./create_admin.sh "username" "password"

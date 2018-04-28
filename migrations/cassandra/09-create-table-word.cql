@@ -2,6 +2,7 @@ CREATE TABLE word_habit.word (
   id                         UUID,
   primary_lang               TEXT,
   secondary_lang             TEXT,
+  difficulty                 TEXT,
   environment                TEXT,
   primary_lang_word          TEXT,
   primary_lang_description   TEXT,

@@ -9,6 +9,7 @@ class TopicModel extends Model {
       'name',
       'primaryLang',
       'secondaryLang',
+      'difficulty',
       'environment',
       'deleted',
       'createdAt',
@@ -16,16 +17,18 @@ class TopicModel extends Model {
     ];
   }
 
-  static selectOne(primaryLang, secondaryLang, environment) {
+  static selectOne(primaryLang, secondaryLang, difficulty, environment) {
     const query =
       'SELECT * FROM topic' +
       '  WHERE primary_lang = ? ' +
       '    AND secondary_lang = ?' +
+      '    AND difficulty = ?' +
       '    AND environment = ?;';
 
     const args = [
       primaryLang,
       secondaryLang,
+      difficulty,
       environment
     ];
 

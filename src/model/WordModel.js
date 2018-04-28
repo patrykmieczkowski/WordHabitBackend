@@ -9,6 +9,7 @@ class WordModel extends Model {
       'id',
       'primaryLang',
       'secondaryLang',
+      'difficulty',
       'environment',
       'primaryLangWord',
       'primaryLangDescription',
@@ -78,6 +79,7 @@ class WordModel extends Model {
       '  id,' +
       '  primary_lang,' +
       '  secondary_lang,' +
+      '  difficulty,' +
       '  environment,' +
       '  primary_lang_word,' +
       '  primary_lang_description,' +
@@ -102,6 +104,7 @@ class WordModel extends Model {
       '  ?,' +
       '  ?,' +
       '  ?,' +
+      '  ?,' +
       '  toTimestamp(now()),' +
       '  toTimestamp(now())' +
       ');';
@@ -110,6 +113,7 @@ class WordModel extends Model {
       this.getId(),
       this.getPrimaryLang(),
       this.getSecondaryLang(),
+      this.getDifficulty(),
       this.getEnvironment(),
       this.getPrimaryLangWord(),
       this.getPrimaryLangDescription(),

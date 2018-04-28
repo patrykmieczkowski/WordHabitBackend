@@ -1,7 +1,8 @@
 NAME="$1"
 PRIMARY_LANG="$2"
 SECONDARY_LANG="$3"
-ENVIRONMENT="$4"
+DIFFICULTY="$4"
+ENVIRONMENT="$5"
 node -e "
   const cassandraDriver = require('cassandra-driver');
   const config = require('../config.json');
@@ -12,6 +13,7 @@ node -e "
   const name = \`$NAME\`.trim();
   const primaryLang = \`$PRIMARY_LANG\`.trim();
   const secondaryLang = \`$SECONDARY_LANG\`.trim();
+  const difficulty = \`$DIFFICULTY\`.trim();
   const environment = \`$ENVIRONMENT\`.trim();
 
   const cassandraConfig = config.database.cassandra;
@@ -23,11 +25,11 @@ node -e "
   });
 
   const query = \`
-    INSERT INTO topic (name, primary_lang, secondary_lang, environment, deleted, created_at, modified_at)
-      VALUES (?, ?, ?, ?, ?, toTimestamp(now()), toTimestamp(now()));
+    INSERT INTO topic (name, primary_lang, secondary_lang, difficulty, environment, deleted, created_at, modified_at)
+      VALUES (?, ?, ?, ?, ?, ?, toTimestamp(now()), toTimestamp(now()));
   \`;
 
-  client.execute(query, [name, primaryLang, secondaryLang, environment, false])
+  client.execute(query, [name, primaryLang, secondaryLang, difficulty, environment, false])
     .then(result => {
       console.info('Topic successfully added');
       process.exit();
