@@ -39,6 +39,7 @@ export default class Loader extends Component {
     this._wrapper.innerHTML = '<div class="wh-loader-aligner"></div>' + interpolatedTemplate;
 
     this._target.appendChild(this._wrapper);
+    this._waitForStyle(this._wrapper, 'opacity');
     setTimeout(() => this._wrapper.className += ' fade-in', 0);
   }
 

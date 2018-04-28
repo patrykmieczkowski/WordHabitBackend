@@ -23,4 +23,8 @@ export default class Component {
 
     return interpolatedTemplate;
   }
+
+  _waitForStyle(element, style) {
+    return window.getComputedStyle(element)[style];
+  }
 }

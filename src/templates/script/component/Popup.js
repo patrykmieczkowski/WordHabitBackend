@@ -134,6 +134,7 @@ export default class Popup extends Component {
       : null;
 
     document.body.appendChild(this._wrapper);
+    this._waitForStyle(this._wrapper, 'opacity');
     setTimeout(() => this._wrapper.className += ' fade-in', 0);
   }
 
