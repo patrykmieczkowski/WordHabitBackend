@@ -2,6 +2,7 @@ const Route = require('../abstract/Route');
 const HttpError = require('../../utils/HttpError');
 const AppContext = require('../../utils/AppContext');
 const Template = require('../../utils/Template');
+const TopicModel = require('../../model/TopicModel');
 const WordModel = require('../../model/WordModel');
 
 
@@ -14,12 +15,18 @@ class PanelDashboardRoute extends Route {
           throw new HttpError(HttpError.Code.FORBIDDEN);
       })
       .then(() => {
-        return WordModel.selectAll();
+        return Promise.all([WordModel.selectAll(), TopicModel.selectAll()]);
       })
-      .then(words => {
+      .then(objects => {
+        let words = objects[0];
         (words || []).sort((a, b) => a.getExecuteAt() > b.getExecuteAt() ? -1 : 1);
         words = (words || []).map(word => word.serialize());
-        return this.render(req, res, next, Template.Name.DASHBOARD, {words: words});
+
+        let topics = objects[1];
+        (topics || []).sort((a, b) => a.getModifiedAt() > b.getModifiedAt() ? -1 : 1);
+        topics = (topics || []).map(topic => topic.serialize());
+
+        return this.render(req, res, next, Template.Name.DASHBOARD, {words: words, topics: topics});
       })
       .catch(err => {
         const message = err && err.message;

@@ -19,6 +19,22 @@
     <div class="wh-content wh-container">
       <strong class="wh-alert">{{{error}}}</strong>
 
+      <div id="wordListTopicListSwitch" class="wh-switch">
+        <button
+          class="wh-switch-option wh-switch-option-active"
+          type="button"
+          data-list="WORD">
+          Words
+        </button>
+        <span class="wh-switch-option-divider"></span>
+        <button
+          class="wh-switch-option"
+          type="button"
+          data-list="TOPIC">
+          Topics
+        </button>
+      </div>
+
       <table id="wordList" class="wh-table">
         <thead>
           <tr>
@@ -61,6 +77,31 @@
                 </svg>
               </button>
             </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+
+      <table id="topicList" class="wh-table wh-hidden">
+        <thead>
+        <tr>
+          <th>Environment</th>
+          <th>Difficulty</th>
+          <th>Language</th>
+          <th>Name</th>
+        </tr>
+        </thead>
+        <tbody>
+          {{#each topics}}
+          <tr class="wh-table-row-success">
+            <td>{{environment}}</td>
+            <td>{{difficulty}}</td>
+            <td>
+              {{primaryLang}}
+              <div class="wh-table-cell-divider"></div>
+              {{secondaryLang}}
+            </td>
+            <td>{{name}}</td>
           </tr>
           {{/each}}
         </tbody>

@@ -35,6 +35,17 @@ class TopicModel extends Model {
     return AppContext.instance().getCassandra().execute(query, args)
       .then(result => this.parseResult(result, true));
   }
+
+  static selectAll() {
+    const query =
+      'SELECT * FROM topic;';
+
+    const args = [
+    ];
+
+    return AppContext.instance().getCassandra().execute(query, args)
+      .then(result => this.parseResult(result));
+  }
 }
 
 module.exports = TopicModel;

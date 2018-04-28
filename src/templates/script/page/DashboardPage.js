@@ -5,6 +5,37 @@ import Page from './abstract/Page';
 
 export default class DashboardPage extends Page {
 
+  static get _WORD_LIST_TOPIC_LIST_SWITCH_ID() {
+    return 'wordListTopicListSwitch';
+  }
+
+  static get _SWITCH_OPTION_CLASS_NAME() {
+    return 'wh-switch-option';
+  }
+
+  static get _SWITCH_OPTION_ACTIVE_CLASS_NAME() {
+    return 'wh-switch-option-active';
+  }
+
+  static get _SwitchOption() {
+    return {
+      WORD: 'WORD',
+      TOPIC: 'TOPIC'
+    };
+  }
+
+  static get _HIDDEN_CLASS_NAME() {
+    return 'wh-hidden';
+  }
+
+  static get _WORD_LIST_ID() {
+    return 'wordList';
+  }
+
+  static get _TOPIC_LIST_ID() {
+    return 'topicList';
+  }
+
   static get _WORD_DETAILS_BUTTON_CLASS() {
     return 'wordDetailsButton';
   }
@@ -19,8 +50,39 @@ export default class DashboardPage extends Page {
 
   init() {
     super.init();
+    this.initWordListTopicListSwitch();
     this.initWordDetailsButtons();
     this.initDeleteWordButtons();
+  }
+
+  initWordListTopicListSwitch() {
+    const htmlUtils = this.getContext()[Page.Context.HTML_UTILS];
+    const wordList = document.getElementById(DashboardPage._WORD_LIST_ID);
+    const topicList = document.getElementById(DashboardPage._TOPIC_LIST_ID);
+    const wordListTopicListSwitch =
+      document.getElementById(DashboardPage._WORD_LIST_TOPIC_LIST_SWITCH_ID);
+    const switchOptions = htmlUtils.collectionToArray(
+      wordListTopicListSwitch.getElementsByClassName(DashboardPage._SWITCH_OPTION_CLASS_NAME));
+
+    switchOptions.forEach(switchOption =>
+      switchOption.onclick = e => {
+        e.target.blur();
+        switchOptions.forEach(opt => htmlUtils.removeClassName(opt, DashboardPage._SWITCH_OPTION_ACTIVE_CLASS_NAME));
+        htmlUtils.addClassName(e.currentTarget, DashboardPage._SWITCH_OPTION_ACTIVE_CLASS_NAME);
+        const activateList = e.currentTarget.dataset.list;
+        switch (activateList) {
+          case DashboardPage._SwitchOption.WORD:
+            htmlUtils.addClassName(topicList, DashboardPage._HIDDEN_CLASS_NAME);
+            htmlUtils.removeClassName(wordList, DashboardPage._HIDDEN_CLASS_NAME);
+            break;
+          case DashboardPage._SwitchOption.TOPIC:
+            htmlUtils.addClassName(wordList, DashboardPage._HIDDEN_CLASS_NAME);
+            htmlUtils.removeClassName(topicList, DashboardPage._HIDDEN_CLASS_NAME);
+            break;
+          default:
+            break;
+        }
+      });
   }
 
   initWordDetailsButtons() {

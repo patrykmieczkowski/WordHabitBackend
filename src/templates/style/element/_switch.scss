@@ -1,0 +1,46 @@
+@import '../_constant';
+@import '../_util';
+
+
+.wh-switch {
+  display: inline-block;
+  height: 40px;
+  padding: 0;
+  margin: $SIZE_MARGIN_M 0;
+  border: 1px solid $COLOR_GREEN_DARK;
+  border-radius: $SIZE_BORDER_RADIUS;
+  font-size: 0;
+
+  > * {
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border: 0;
+  }
+}
+
+.wh-switch-option {
+  outline: none;
+  cursor: pointer;
+  padding: $SIZE_PADDING_S;
+  font-size: $SIZE_FONT_M;
+  color: $COLOR_LIGHT;
+  background-color: $COLOR_GREEN;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: on-hover($COLOR_GREEN);
+  }
+}
+
+.wh-switch-option-active {
+  background-color: $COLOR_GREEN_DARK;
+}
+
+.wh-switch-option-divider {
+  width: 0;
+  border-right: 1px solid $COLOR_GREEN_DARK;
+}
