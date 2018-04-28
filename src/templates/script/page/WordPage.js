@@ -34,7 +34,8 @@ export default class WordPage extends Page {
   static get _ImageOption() {
     return {
       URL: 'URL',
-      FILE: 'FILE'
+      FILE: 'FILE',
+      NONE: 'NONE'
     };
   }
 
@@ -117,10 +118,11 @@ export default class WordPage extends Page {
     imageOptionRadioButtons.forEach(imageOptionRadioButton => {
       imageOptionRadioButton.onclick = e => {
         const isUrlImageOption = e.target.value === WordPage._ImageOption.URL;
+        const isFileImageOption = e.target.value === WordPage._ImageOption.FILE;
         const imageUrl = document.getElementById(WordPage._IMAGE_URL_FIELD_ID);
         const imageFile = document.getElementById(WordPage._IMAGE_FILE_FIELD_ID);
         imageUrl.disabled = !isUrlImageOption;
-        imageFile.disabled = isUrlImageOption;
+        imageFile.disabled = !isFileImageOption;
         imageUrl.value = '';
         imageFile.value = '';
       };

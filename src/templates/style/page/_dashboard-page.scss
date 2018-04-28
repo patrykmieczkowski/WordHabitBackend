@@ -58,6 +58,8 @@
 
         & > *:nth-child(2n) {
           padding-left: $SIZE_PADDING_M;
+          border-left: 1px solid $COLOR_DIVIDER;
+          margin-left: -1px;
         }
       }
     }

@@ -61,17 +61,22 @@
         <fieldset>
           <legend>Image</legend>
 
-          <label for="imageUrlRadio" class="pure-radio">
+          <label for="imageUrlRadio">
             <input id="imageUrlRadio" type="radio" name="imageOption" value="URL" checked />
             Image URL
           </label>
           <input id="imageUrl" type="url" name="imageUrl" />
 
-          <label for="imageFileRadio" class="pure-radio">
+          <label for="imageFileRadio">
             <input id="imageFileRadio" type="radio" name="imageOption" value="FILE">
             Image file
           </label>
           <input id="imageFile" type="file" name="imageFile" disabled />
+
+          <label for="noImageRadio">
+            <input id="noImageRadio" type="radio" name="imageOption" value="NONE" />
+            No image
+          </label>
         </fieldset>
 
         <fieldset>

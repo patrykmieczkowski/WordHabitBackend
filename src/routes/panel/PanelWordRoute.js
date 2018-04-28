@@ -12,6 +12,14 @@ const WordModel = require('../../model/WordModel');
 
 class PanelWordRoute extends Route {
 
+  static get _ImageOption() {
+    return {
+      URL: 'URL',
+      FILE: 'FILE',
+      NONE: 'NONE'
+    };
+  }
+
   GET(req, res, next) {
     this.authenticate(req, res, next)
       .then(isUserAuthenticated => {
@@ -65,11 +73,11 @@ class PanelWordRoute extends Route {
           imageOption: Validator.notEmptyString,
           imageUrl: {
             validateFunc: Validator.imageUrl,
-            optional: fields.imageOption !== 'URL'
+            optional: fields.imageOption !== PanelWordRoute._ImageOption.URL
           },
           imageFile: {
             validateFunc: Validator.imagePath,
-            optional: fields.imageOption !== 'FILE'
+            optional: fields.imageOption !== PanelWordRoute._ImageOption.FILE
           },
           executeAtDate: Validator.dateString,
           executeAtTime: Validator.timeString,
@@ -81,6 +89,20 @@ class PanelWordRoute extends Route {
           throw new HttpError(HttpError.Code.BAD_REQUEST, 'Form contains invalid fields');
       })
       .then(() => {
+        let imageUrl;
+        switch (fields.imageOption) {
+          case PanelWordRoute._ImageOption.URL:
+            imageUrl = fields.imageUrl.trim();
+            break;
+          case PanelWordRoute._ImageOption.FILE:
+            imageUrl = path.basename(files.imageFile.path);
+            break;
+          case PanelWordRoute._ImageOption.NONE:
+          default:
+            imageUrl = '';
+            break;
+        }
+
         const word = new WordModel();
         word.setId(uuidv4());
         word.setPrimaryLang(fields.primaryLang);
@@ -90,9 +112,7 @@ class PanelWordRoute extends Route {
         word.setPrimaryLangDescription(fields.primaryLangDescription);
         word.setSecondaryLangWord(fields.secondaryLangWord);
         word.setSecondaryLangDescription(fields.secondaryLangDescription);
-        word.setImageUrl(fields.imageOption === 'URL'
-          ? fields.imageUrl.trim()
-          : path.basename(files.imageFile.path));
+        word.setImageUrl(imageUrl);
         word.setExecuted(false);
         word.setExecuteAt(moment(`${fields.executeAtDate} ${fields.executeAtTime}`)
           .add(fields.timezoneOffset, 'minutes')

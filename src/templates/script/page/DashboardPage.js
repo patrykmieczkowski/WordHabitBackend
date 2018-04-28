@@ -53,7 +53,7 @@ export default class DashboardPage extends Page {
             `<div class="label">Execute at:</div>` +
             `<strong>${dateUtils.formatDate(details.executeAt)}<br />(${dateUtils.getRangeBetween(details.executeAt, Date.now()).formattedRange})</strong>` +
             `<div class="label">Image:</div>` +
-            `<img src="${details.imageUrl}" />`;
+            `${details.imageUrl ? `<img src="${details.imageUrl}" />` : '<strong>No image</strong>'}`;
 
           new Popup(popupType, popupTitle, popupContent, undefined, undefined, 'wh-popup-word-details');
           e.target.blur();

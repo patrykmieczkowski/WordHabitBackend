@@ -1,2 +1,9 @@
+@import '../_constant';
+
+
 .wh-word-page {
+
+  label[for='noImageRadio'] {
+    margin-bottom: $SIZE_MARGIN_M;
+  }
 }
